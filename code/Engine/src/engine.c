@@ -2191,360 +2191,316 @@ static int wallmost(short *mostbuf, int32_t w, int32_t sectnum, uint8_t  dastat)
 
     return(bad);
 }
+
+
 static void drawalls(int32_t bunch)
 {
-    sectortype* currentSector, * nextSector;
-    walltype* currentWall;
-    int32_t i, x, startX, endX, ceilingZ[5], floorZ[5];
-    int32_t wallIndex, sectorIndex, nextSectorIndex;
-    int32_t initialSmostwallCount, initialSmostCount, foundWall;
-    uint8_t andCeilingStat, andFloorStat;
+    sectortype *sec, *nextsec;
+    walltype *wal;
+    int32_t i, x, x1, x2, cz[5], fz[5];
+    int32_t z, wallnum, sectnum, nextsectnum;
+    int32_t startsmostwallcnt, startsmostcnt, gotswall;
+    uint8_t  andwstat1, andwstat2;
 
-    wallIndex = bunchfirst[bunch];
-    sectorIndex = pvWalls[wallIndex].sectorId;
-    currentSector = &sector[sectorIndex];
+    z = bunchfirst[bunch];
+    sectnum = pvWalls[z].sectorId;
+    sec = &sector[sectnum];
 
-    andCeilingStat = 0xff;
-    andFloorStat = 0xff;
-    for (; wallIndex >= 0; wallIndex = bunchWallsList[wallIndex])
-    {
-        andCeilingStat &= wallmost(uplc, wallIndex, sectorIndex, (uint8_t)0);
-        andFloorStat &= wallmost(dplc, wallIndex, sectorIndex, (uint8_t)1);
+    andwstat1 = 0xff;
+    andwstat2 = 0xff;
+    for(; z>=0; z=bunchWallsList[z]){ /* uplc/dplc calculation */
+    
+        andwstat1 &= wallmost(uplc,z,sectnum,(uint8_t )0);
+        andwstat2 &= wallmost(dplc,z,sectnum,(uint8_t )1);
     }
 
-    /* draw ceilings */
-    if ((andCeilingStat & 3) != 3)
-    {
-        if ((currentSector->ceilingstat & 3) == 2)
-            grouscan(pvWalls[bunchfirst[bunch]].screenSpaceCoo[0][VEC_COL], pvWalls[bunchlast[bunch]].screenSpaceCoo[1][VEC_COL], sectorIndex, 0);
-        else if ((currentSector->ceilingstat & 1) == 0)
-            ceilscan(pvWalls[bunchfirst[bunch]].screenSpaceCoo[0][VEC_COL], pvWalls[bunchlast[bunch]].screenSpaceCoo[1][VEC_COL], sectorIndex);
+	/* draw ceilings */
+    if ((andwstat1&3) != 3){
+        if ((sec->ceilingstat&3) == 2)
+            grouscan(pvWalls[bunchfirst[bunch]].screenSpaceCoo[0][VEC_COL],pvWalls[bunchlast[bunch]].screenSpaceCoo[1][VEC_COL],sectnum,0);
+        else if ((sec->ceilingstat&1) == 0)
+            ceilscan(pvWalls[bunchfirst[bunch]].screenSpaceCoo[0][VEC_COL],pvWalls[bunchlast[bunch]].screenSpaceCoo[1][VEC_COL],sectnum);
         else
-            parascan(pvWalls[bunchfirst[bunch]].screenSpaceCoo[0][VEC_COL], pvWalls[bunchlast[bunch]].screenSpaceCoo[1][VEC_COL], sectorIndex, 0, bunch);
+            parascan(pvWalls[bunchfirst[bunch]].screenSpaceCoo[0][VEC_COL],pvWalls[bunchlast[bunch]].screenSpaceCoo[1][VEC_COL],sectnum,0,bunch);
     }
 
-    /* draw floors */
-    if ((andFloorStat & 12) != 12)
-    {
-        if ((currentSector->floorstat & 3) == 2)
-            grouscan(pvWalls[bunchfirst[bunch]].screenSpaceCoo[0][VEC_COL], pvWalls[bunchlast[bunch]].screenSpaceCoo[1][VEC_COL], sectorIndex, 1);
-        else if ((currentSector->floorstat & 1) == 0)
-            florscan(pvWalls[bunchfirst[bunch]].screenSpaceCoo[0][VEC_COL], pvWalls[bunchlast[bunch]].screenSpaceCoo[1][VEC_COL], sectorIndex);
+	/* draw floors */
+    if ((andwstat2&12) != 12){
+        if ((sec->floorstat&3) == 2)
+            grouscan(pvWalls[bunchfirst[bunch]].screenSpaceCoo[0][VEC_COL],pvWalls[bunchlast[bunch]].screenSpaceCoo[1][VEC_COL],sectnum,1);
+        else if ((sec->floorstat&1) == 0)
+            florscan(pvWalls[bunchfirst[bunch]].screenSpaceCoo[0][VEC_COL],pvWalls[bunchlast[bunch]].screenSpaceCoo[1][VEC_COL],sectnum);
         else
-            parascan(pvWalls[bunchfirst[bunch]].screenSpaceCoo[0][VEC_COL], pvWalls[bunchlast[bunch]].screenSpaceCoo[1][VEC_COL], sectorIndex, 1, bunch);
+            parascan(pvWalls[bunchfirst[bunch]].screenSpaceCoo[0][VEC_COL],pvWalls[bunchlast[bunch]].screenSpaceCoo[1][VEC_COL],sectnum,1,bunch);
     }
 
     /* DRAW WALLS SECTION! */
-    for (wallIndex = bunchfirst[bunch]; wallIndex >= 0; wallIndex = bunchWallsList[wallIndex])
-    {
-        startX = pvWalls[wallIndex].screenSpaceCoo[0][VEC_COL];
-        endX = pvWalls[wallIndex].screenSpaceCoo[1][VEC_COL];
-        if (umost[endX] >= dmost[endX])
+    for(z=bunchfirst[bunch]; z>=0; z=bunchWallsList[z]){
+        
+        x1 = pvWalls[z].screenSpaceCoo[0][VEC_COL];
+        x2 = pvWalls[z].screenSpaceCoo[1][VEC_COL];
+        if (umost[x2] >= dmost[x2])
         {
-            for (x = startX; x < endX; x++)
-                if (umost[x] < dmost[x])
-                    break;
 
-            if (x >= endX)
+            for(x=x1; x<x2; x++)
+                if (umost[x] < dmost[x]) 
+					break;
+
+            if (x >= x2)
             {
-                smostwall[smostwallcnt] = wallIndex;
+                smostwall[smostwallcnt] = z;
                 smostwalltype[smostwallcnt] = 0;
                 smostwallcnt++;
                 continue;
             }
         }
 
-        currentWall = &wall[pvWalls[wallIndex].worldWallId];
-        nextSectorIndex = currentWall->nextsector;
-        nextSector = &sector[nextSectorIndex];
+        wallnum = pvWalls[z].worldWallId;
+        wal = &wall[wallnum];
+        nextsectnum = wal->nextsector;
+        nextsec = &sector[nextsectnum];
 
-        foundWall = 0;
+        gotswall = 0;
 
-        initialSmostwallCount = smostwallcnt;
-        initialSmostCount = smostcnt;
+        startsmostwallcnt = smostwallcnt;
+        startsmostcnt = smostcnt;
 
-        if ((searchit == 2) && (searchx >= startX) && (searchx <= endX))
+        if ((searchit == 2) && (searchx >= x1) && (searchx <= x2))
         {
-            if (searchy <= uplc[searchx])
-            {
-                searchsector = sectorIndex;
-                searchwall = pvWalls[wallIndex].worldWallId;
+            if (searchy <= uplc[searchx]){ /* ceiling */
+                searchsector = sectnum;
+                searchwall = wallnum;
                 searchstat = 1;
                 searchit = 1;
             }
-            else if (searchy >= dplc[searchx])
-            {
-                searchsector = sectorIndex;
-                searchwall = pvWalls[wallIndex].worldWallId;
+            else if (searchy >= dplc[searchx]){ /* floor */
+                searchsector = sectnum;
+                searchwall = wallnum;
                 searchstat = 2;
                 searchit = 1;
             }
         }
 
-        if (nextSectorIndex >= 0)
-        {
-            getzsofslope((short)sectorIndex, currentWall->x, currentWall->y, &ceilingZ[0], &floorZ[0]);
-            getzsofslope((short)sectorIndex, wall[currentWall->point2].x, wall[currentWall->point2].y, &ceilingZ[1], &floorZ[1]);
-            getzsofslope((short)nextSectorIndex, currentWall->x, currentWall->y, &ceilingZ[2], &floorZ[2]);
-            getzsofslope((short)nextSectorIndex, wall[currentWall->point2].x, wall[currentWall->point2].y, &ceilingZ[3], &floorZ[3]);
-            getzsofslope((short)nextSectorIndex, globalposx, globalposy, &ceilingZ[4], &floorZ[4]);
+        if (nextsectnum >= 0){
+            getzsofslope((short)sectnum,wal->x,wal->y,&cz[0],&fz[0]);
+            getzsofslope((short)sectnum,wall[wal->point2].x,wall[wal->point2].y,&cz[1],&fz[1]);
+            getzsofslope((short)nextsectnum,wal->x,wal->y,&cz[2],&fz[2]);
+            getzsofslope((short)nextsectnum,wall[wal->point2].x,wall[wal->point2].y,&cz[3],&fz[3]);
+            getzsofslope((short)nextsectnum,globalposx,globalposy,&cz[4],&fz[4]);
 
-            if ((currentWall->cstat & 48) == 16)
-                maskwall[maskwallcnt++] = wallIndex;
+            if ((wal->cstat&48) == 16)
+                maskwall[maskwallcnt++] = z;
 
-            if (((currentSector->ceilingstat & 1) == 0) || ((nextSector->ceilingstat & 1) == 0))
-            {
-                if ((ceilingZ[2] <= ceilingZ[0]) && (ceilingZ[3] <= ceilingZ[1]))
-                {
+            if (((sec->ceilingstat&1) == 0) || ((nextsec->ceilingstat&1) == 0)){
+                if ((cz[2] <= cz[0]) && (cz[3] <= cz[1])){
                     if (globparaceilclip)
-                        for (x = startX; x <= endX; x++)
+                        for(x=x1; x<=x2; x++)
                             if (uplc[x] > umost[x])
-                                if (umost[x] <= dmost[x])
-                                {
+                                if (umost[x] <= dmost[x]){
                                     umost[x] = uplc[x];
-                                    if (umost[x] > dmost[x])
-                                        numhits--;
+                                    if (umost[x] > dmost[x]) numhits--;
                                 }
                 }
-                else
-                {
-                    wallmost(dwall, wallIndex, nextSectorIndex, (uint8_t)0);
-                    if ((ceilingZ[2] > floorZ[0]) || (ceilingZ[3] > floorZ[1]))
-                        for (i = startX; i <= endX; i++)
-                            if (dwall[i] > dplc[i])
-                                dwall[i] = dplc[i];
+                else{
+                    wallmost(dwall,z,nextsectnum,(uint8_t )0);
+                    if ((cz[2] > fz[0]) || (cz[3] > fz[1]))
+                        for(i=x1; i<=x2; i++) if (dwall[i] > dplc[i]) dwall[i] = dplc[i];
 
-                    if ((searchit == 2) && (searchx >= startX) && (searchx <= endX))
-                        if (searchy <= dwall[searchx])
-                        {
-                            searchsector = sectorIndex;
-                            searchwall = pvWalls[wallIndex].worldWallId;
+                    if ((searchit == 2) && (searchx >= x1) && (searchx <= x2))
+                        if (searchy <= dwall[searchx]) /* wall */{
+                            searchsector = sectnum;
+                            searchwall = wallnum;
                             searchstat = 0;
                             searchit = 1;
                         }
 
-                    globalorientation = (int32_t)currentWall->cstat;
-                    globalpicnum = currentWall->picnum;
-                    if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES)
-                        globalpicnum = 0;
-                    globalxpanning = (int32_t)currentWall->xpanning;
-                    globalypanning = (int32_t)currentWall->ypanning;
-                    globalshiftval = (picsiz[globalpicnum] >> 4);
-                    if (pow2long[globalshiftval] != tiles[globalpicnum].dim.height)
-                        globalshiftval++;
-                    globalshiftval = 32 - globalshiftval;
-
-                    if (tiles[globalpicnum].animFlags & 192)
+                    globalorientation = (int32_t)wal->cstat;
+                    globalpicnum = wal->picnum;
+                    if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) globalpicnum = 0;
+                    globalxpanning = (int32_t)wal->xpanning;
+                    globalypanning = (int32_t)wal->ypanning;
+                    globalshiftval = (picsiz[globalpicnum]>>4);
+                    if (pow2long[globalshiftval] != tiles[globalpicnum].dim.height) globalshiftval++;
+                    globalshiftval = 32-globalshiftval;
+                    
+                    //Animated
+                    if (tiles[globalpicnum].animFlags&192)
                         globalpicnum += animateoffs(globalpicnum);
-
-                    globalshade = (int32_t)currentWall->shade;
+                    
+                    globalshade = (int32_t)wal->shade;
                     globvis = globalvisibility;
-                    if (currentSector->visibility != 0)
-                        globvis = mulscale4(globvis, (int32_t)((uint8_t)(currentSector->visibility + 16)));
-                    globalpal = (int32_t)currentWall->pal;
-                    globalyscale = (currentWall->yrepeat << (globalshiftval - 19));
-                    if ((globalorientation & 4) == 0)
-                        globalzd = (((globalposz - nextSector->ceilingz) * globalyscale) << 8);
+                    if (sec->visibility != 0) globvis = mulscale4(globvis,(int32_t)((uint8_t )(sec->visibility+16)));
+                    globalpal = (int32_t)wal->pal;
+                    globalyscale = (wal->yrepeat<<(globalshiftval-19));
+                    if ((globalorientation&4) == 0)
+                        globalzd = (((globalposz-nextsec->ceilingz)*globalyscale)<<8);
                     else
-                        globalzd = (((globalposz - currentSector->ceilingz) * globalyscale) << 8);
-                    globalzd += (globalypanning << 24);
-                    if (globalorientation & 256)
-                        globalyscale = -globalyscale, globalzd = -globalzd;
+                        globalzd = (((globalposz-sec->ceilingz)*globalyscale)<<8);
+                    globalzd += (globalypanning<<24);
+                    if (globalorientation&256) globalyscale = -globalyscale, globalzd = -globalzd;
 
-                    if (foundWall == 0)
-                    {
-                        foundWall = 1;
-                        prepwall(wallIndex, currentWall);
+                    if (gotswall == 0) {
+                        gotswall = 1;
+                        prepwall(z,wal);
                     }
-                    wallscan(startX, endX, uplc, dwall, swall, lwall);
+                    wallscan(x1,x2,uplc,dwall,swall,lwall);
 
-                    if ((ceilingZ[2] >= ceilingZ[0]) && (ceilingZ[3] >= ceilingZ[1]))
-                    {
-                        for (x = startX; x <= endX; x++)
+                    if ((cz[2] >= cz[0]) && (cz[3] >= cz[1])){
+                        for(x=x1; x<=x2; x++)
                             if (dwall[x] > umost[x])
-                                if (umost[x] <= dmost[x])
-                                {
+                                if (umost[x] <= dmost[x]){
                                     umost[x] = dwall[x];
-                                    if (umost[x] > dmost[x])
-                                        numhits--;
+                                    if (umost[x] > dmost[x]) numhits--;
                                 }
                     }
                     else
                     {
-                        for (x = startX; x <= endX; x++)
-                            if (umost[x] <= dmost[x])
-                            {
-                                i = max(uplc[x], dwall[x]);
-                                if (i > umost[x])
-                                {
+                        for(x=x1; x<=x2; x++)
+                            if (umost[x] <= dmost[x]){
+                                i = max(uplc[x],dwall[x]);
+                                if (i > umost[x]){
                                     umost[x] = i;
-                                    if (umost[x] > dmost[x])
-                                        numhits--;
+                                    if (umost[x] > dmost[x]) numhits--;
                                 }
                             }
                     }
                 }
-                if ((ceilingZ[2] < ceilingZ[0]) || (ceilingZ[3] < ceilingZ[1]) || (globalposz < ceilingZ[4]))
-                {
-                    i = endX - startX + 1;
-                    if (smostcnt + i < MAXYSAVES)
-                    {
+                if ((cz[2] < cz[0]) || (cz[3] < cz[1]) || (globalposz < cz[4])){
+                    i = x2-x1+1;
+                    if (smostcnt+i < MAXYSAVES){
                         smoststart[smostwallcnt] = smostcnt;
-                        smostwall[smostwallcnt] = wallIndex;
-                        smostwalltype[smostwallcnt] = 1; /* 1 for umost */
+                        smostwall[smostwallcnt] = z;
+                        smostwalltype[smostwallcnt] = 1;   /* 1 for umost */
                         smostwallcnt++;
-                        copybufbyte((int32_t*)&umost[startX], (int32_t*)&smost[smostcnt], i * sizeof(smost[0]));
+                        copybufbyte((int32_t *)&umost[x1],(int32_t *)&smost[smostcnt],i*sizeof(smost[0]));
                         smostcnt += i;
                     }
                 }
             }
-            if (((currentSector->floorstat & 1) == 0) || ((nextSector->floorstat & 1) == 0))
-            {
-                if ((floorZ[2] >= floorZ[0]) && (floorZ[3] >= floorZ[1]))
-                {
+            if (((sec->floorstat&1) == 0) || ((nextsec->floorstat&1) == 0)){
+                if ((fz[2] >= fz[0]) && (fz[3] >= fz[1])){
                     if (globparaflorclip)
-                        for (x = startX; x <= endX; x++)
+                        for(x=x1; x<=x2; x++)
                             if (dplc[x] < dmost[x])
-                                if (umost[x] <= dmost[x])
-                                {
+                                if (umost[x] <= dmost[x]){
                                     dmost[x] = dplc[x];
-                                    if (umost[x] > dmost[x])
-                                        numhits--;
+                                    if (umost[x] > dmost[x]) numhits--;
                                 }
                 }
-                else
-                {
-                    wallmost(uwall, wallIndex, nextSectorIndex, (uint8_t)1);
-                    if ((floorZ[2] < ceilingZ[0]) || (floorZ[3] < ceilingZ[1]))
-                        for (i = startX; i <= endX; i++)
-                            if (uwall[i] < uplc[i])
-                                uwall[i] = uplc[i];
+                else{
+                    wallmost(uwall,z,nextsectnum,(uint8_t )1);
+                    if ((fz[2] < cz[0]) || (fz[3] < cz[1]))
+                        for(i=x1; i<=x2; i++) if (uwall[i] < uplc[i]) uwall[i] = uplc[i];
 
-                    if ((searchit == 2) && (searchx >= startX) && (searchx <= endX))
-                        if (searchy >= uwall[searchx])
-                        {
-                            searchsector = sectorIndex;
-                            searchwall = pvWalls[wallIndex].worldWallId;
-                            if ((currentWall->cstat & 2) > 0)
-                                searchwall = currentWall->nextwall;
+                    if ((searchit == 2) && (searchx >= x1) && (searchx <= x2))
+                        if (searchy >= uwall[searchx]) /* wall */{
+                            searchsector = sectnum;
+                            searchwall = wallnum;
+                            if ((wal->cstat&2) > 0) searchwall = wal->nextwall;
                             searchstat = 0;
                             searchit = 1;
                         }
 
-                    if ((currentWall->cstat & 2) > 0)
-                    {
-                        wallIndex = currentWall->nextwall;
-                        currentWall = &wall[wallIndex];
-                        globalorientation = (int32_t)currentWall->cstat;
-                        globalpicnum = currentWall->picnum;
-                        if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES)
-                            globalpicnum = 0;
-                        globalxpanning = (int32_t)currentWall->xpanning;
-                        globalypanning = (int32_t)currentWall->ypanning;
-
-                        if (tiles[globalpicnum].animFlags & 192)
+                    if ((wal->cstat&2) > 0){
+                        wallnum = wal->nextwall;
+                        wal = &wall[wallnum];
+                        globalorientation = (int32_t)wal->cstat;
+                        globalpicnum = wal->picnum;
+                        if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) globalpicnum = 0;
+                        globalxpanning = (int32_t)wal->xpanning;
+                        globalypanning = (int32_t)wal->ypanning;
+                        
+                        if (tiles[globalpicnum].animFlags&192) 
                             globalpicnum += animateoffs(globalpicnum);
-
-                        globalshade = (int32_t)currentWall->shade;
-                        globalpal = (int32_t)currentWall->pal;
-                        wallIndex = pvWalls[wallIndex].worldWallId;
-                        currentWall = &wall[wallIndex];
+                        
+                        globalshade = (int32_t)wal->shade;
+                        globalpal = (int32_t)wal->pal;
+                        wallnum = pvWalls[z].worldWallId;
+                        wal = &wall[wallnum];
                     }
-                    else
-                    {
-                        globalorientation = (int32_t)currentWall->cstat;
-                        globalpicnum = currentWall->picnum;
-
-                        if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES)
+                    else{
+                        globalorientation = (int32_t)wal->cstat;
+                        globalpicnum = wal->picnum;
+                        
+                        if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) 
                             globalpicnum = 0;
-
-                        globalxpanning = (int32_t)currentWall->xpanning;
-                        globalypanning = (int32_t)currentWall->ypanning;
-
-                        if (tiles[globalpicnum].animFlags & 192)
+                        
+                        globalxpanning = (int32_t)wal->xpanning;
+                        globalypanning = (int32_t)wal->ypanning;
+                        
+                        if (tiles[globalpicnum].animFlags&192) 
                             globalpicnum += animateoffs(globalpicnum);
-                        globalshade = (int32_t)currentWall->shade;
-                        globalpal = (int32_t)currentWall->pal;
+                        globalshade = (int32_t)wal->shade;
+                        globalpal = (int32_t)wal->pal;
                     }
                     globvis = globalvisibility;
-                    if (currentSector->visibility != 0)
-                        globvis = mulscale4(globvis, (int32_t)((uint8_t)(currentSector->visibility + 16)));
-                    globalshiftval = (picsiz[globalpicnum] >> 4);
-
+                    if (sec->visibility != 0)
+                        globvis = mulscale4(globvis,(int32_t)((uint8_t )(sec->visibility+16)));
+                    globalshiftval = (picsiz[globalpicnum]>>4);
+                    
                     if (pow2long[globalshiftval] != tiles[globalpicnum].dim.height)
                         globalshiftval++;
-
-                    globalshiftval = 32 - globalshiftval;
-                    globalyscale = (currentWall->yrepeat << (globalshiftval - 19));
-
-                    if ((globalorientation & 4) == 0)
-                        globalzd = (((globalposz - nextSector->floorz) * globalyscale) << 8);
+                    
+                    globalshiftval = 32-globalshiftval;
+                    globalyscale = (wal->yrepeat<<(globalshiftval-19));
+                    
+                    if ((globalorientation&4) == 0)
+                        globalzd = (((globalposz-nextsec->floorz)*globalyscale)<<8);
                     else
-                        globalzd = (((globalposz - currentSector->ceilingz) * globalyscale) << 8);
+                        globalzd = (((globalposz-sec->ceilingz)*globalyscale)<<8);
+                    
+                    globalzd += (globalypanning<<24);
+                    if (globalorientation&256) globalyscale = -globalyscale, globalzd = -globalzd;
 
-                    globalzd += (globalypanning << 24);
-                    if (globalorientation & 256)
-                        globalyscale = -globalyscale, globalzd = -globalzd;
-
-                    if (foundWall == 0)
-                    {
-                        foundWall = 1;
-                        prepwall(wallIndex, currentWall);
+                    if (gotswall == 0) {
+                        gotswall = 1;
+                        prepwall(z,wal);
                     }
-                    wallscan(startX, endX, uwall, dplc, swall, lwall);
+                    wallscan(x1,x2,uwall,dplc,swall,lwall);
 
-                    if ((floorZ[2] <= floorZ[0]) && (floorZ[3] <= floorZ[1]))
+                    if ((fz[2] <= fz[0]) && (fz[3] <= fz[1]))
                     {
-                        for (x = startX; x <= endX; x++)
+                        for(x=x1; x<=x2; x++)
                             if (uwall[x] < dmost[x])
-                                if (umost[x] <= dmost[x])
-                                {
+                                if (umost[x] <= dmost[x]){
                                     dmost[x] = uwall[x];
-                                    if (umost[x] > dmost[x])
-                                        numhits--;
+                                    if (umost[x] > dmost[x]) numhits--;
                                 }
                     }
                     else
                     {
-                        for (x = startX; x <= endX; x++)
-                            if (umost[x] <= dmost[x])
-                            {
-                                i = min(dplc[x], uwall[x]);
+                        for(x=x1; x<=x2; x++)
+                            if (umost[x] <= dmost[x]){
+                                i = min(dplc[x],uwall[x]);
                                 if (i < dmost[x])
                                 {
                                     dmost[x] = i;
-                                    if (umost[x] > dmost[x])
-                                        numhits--;
+                                    if (umost[x] > dmost[x]) numhits--;
                                 }
                             }
                     }
                 }
-                if ((floorZ[2] > floorZ[0]) || (floorZ[3] > floorZ[1]) || (globalposz > floorZ[4]))
-                {
-                    i = endX - startX + 1;
-                    if (smostcnt + i < MAXYSAVES)
-                    {
+                if ((fz[2] > fz[0]) || (fz[3] > fz[1]) || (globalposz > fz[4])){
+                    i = x2-x1+1;
+                    if (smostcnt+i < MAXYSAVES){
                         smoststart[smostwallcnt] = smostcnt;
-                        smostwall[smostwallcnt] = wallIndex;
-                        smostwalltype[smostwallcnt] = 2; /* 2 for dmost */
+                        smostwall[smostwallcnt] = z;
+                        smostwalltype[smostwallcnt] = 2;   /* 2 for dmost */
                         smostwallcnt++;
-                        copybufbyte((int32_t*)&dmost[startX], (int32_t*)&smost[smostcnt], i * sizeof(smost[0]));
+                        copybufbyte((int32_t *)&dmost[x1],(int32_t *)&smost[smostcnt],i*sizeof(smost[0]));
                         smostcnt += i;
                     }
                 }
             }
-            if (numhits < 0)
-                return;
-            if ((!(currentWall->cstat & 32)) && ((visitedSectors[nextSectorIndex >> 3] & pow2char[nextSectorIndex & 7]) == 0))
-            {
-                if (umost[endX] < dmost[endX])
-                    scansector((short)nextSectorIndex);
+            if (numhits < 0) return;
+            if ((!(wal->cstat&32)) && ((visitedSectors[nextsectnum>>3]&pow2char[nextsectnum&7]) == 0)){
+                if (umost[x2] < dmost[x2])
+                    scansector((short) nextsectnum);
                 else
                 {
-                    for (x = startX; x < endX; x++)
-                        if (umost[x] < dmost[x])
-                        {
-                            scansector((short)nextSectorIndex);
+                    for(x=x1; x<x2; x++)
+                        if (umost[x] < dmost[x]){
+                            scansector((short) nextsectnum);
                             break;
                         }
 
@@ -2552,96 +2508,90 @@ static void drawalls(int32_t bunch)
                      * If can't see sector beyond, then cancel smost array and just
                      *  store wall!
                      */
-                    if (x == endX)
-                    {
-                        smostwallcnt = initialSmostwallCount;
-                        smostcnt = initialSmostCount;
-                        smostwall[smostwallcnt] = wallIndex;
+                    if (x == x2){
+                        smostwallcnt = startsmostwallcnt;
+                        smostcnt = startsmostcnt;
+                        smostwall[smostwallcnt] = z;
                         smostwalltype[smostwallcnt] = 0;
                         smostwallcnt++;
                     }
                 }
             }
         }
-        if ((nextSectorIndex < 0) || (currentWall->cstat & 32)) /* White/1-way wall */
+        if ((nextsectnum < 0) || (wal->cstat&32))   /* White/1-way wall */
         {
-            globalorientation = (int32_t)currentWall->cstat;
-            if (nextSectorIndex < 0)
-                globalpicnum = currentWall->picnum;
+            globalorientation = (int32_t)wal->cstat;
+            if (nextsectnum < 0)
+                globalpicnum = wal->picnum;
             else
-                globalpicnum = currentWall->overpicnum;
-
+                globalpicnum = wal->overpicnum;
+            
             if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES)
                 globalpicnum = 0;
-
-            globalxpanning = (int32_t)currentWall->xpanning;
-            globalypanning = (int32_t)currentWall->ypanning;
-
-            if (tiles[globalpicnum].animFlags & 192)
+            
+            globalxpanning = (int32_t)wal->xpanning;
+            globalypanning = (int32_t)wal->ypanning;
+            
+            if (tiles[globalpicnum].animFlags&192)
                 globalpicnum += animateoffs(globalpicnum);
-
-            globalshade = (int32_t)currentWall->shade;
+            
+            globalshade = (int32_t)wal->shade;
             globvis = globalvisibility;
-            if (currentSector->visibility != 0)
-                globvis = mulscale4(globvis, (int32_t)((uint8_t)(currentSector->visibility + 16)));
-
-            globalpal = (int32_t)currentWall->pal;
-            globalshiftval = (picsiz[globalpicnum] >> 4);
+            if (sec->visibility != 0)
+                globvis = mulscale4(globvis,(int32_t)((uint8_t )(sec->visibility+16)));
+            
+            globalpal = (int32_t)wal->pal;
+            globalshiftval = (picsiz[globalpicnum]>>4);
             if (pow2long[globalshiftval] != tiles[globalpicnum].dim.height)
                 globalshiftval++;
-
-            globalshiftval = 32 - globalshiftval;
-            globalyscale = (currentWall->yrepeat << (globalshiftval - 19));
-            if (nextSectorIndex >= 0)
+            
+            globalshiftval = 32-globalshiftval;
+            globalyscale = (wal->yrepeat<<(globalshiftval-19));
+            if (nextsectnum >= 0)
             {
-                if ((globalorientation & 4) == 0)
-                    globalzd = globalposz - nextSector->ceilingz;
+                if ((globalorientation&4) == 0)
+                    globalzd = globalposz-nextsec->ceilingz;
                 else
-                    globalzd = globalposz - currentSector->ceilingz;
+                    globalzd = globalposz-sec->ceilingz;
             }
             else
             {
-                if ((globalorientation & 4) == 0)
-                    globalzd = globalposz - currentSector->ceilingz;
+                if ((globalorientation&4) == 0)
+                    globalzd = globalposz-sec->ceilingz;
                 else
-                    globalzd = globalposz - currentSector->floorz;
+                    globalzd = globalposz-sec->floorz;
             }
-            globalzd = ((globalzd * globalyscale) << 8) + (globalypanning << 24);
-
-            if (globalorientation & 256)
-            {
+            globalzd = ((globalzd*globalyscale)<<8) + (globalypanning<<24);
+            
+            if (globalorientation&256){
                 globalyscale = -globalyscale;
                 globalzd = -globalzd;
             }
 
-            if (foundWall == 0)
-            {
-                foundWall = 1;
-                prepwall(wallIndex, currentWall);
+            if (gotswall == 0) {
+                gotswall = 1;
+                prepwall(z,wal);
             }
+            
+            wallscan(x1,x2,uplc,dplc,swall,lwall);
 
-            wallscan(startX, endX, uplc, dplc, swall, lwall);
-
-            for (x = startX; x <= endX; x++)
+            for(x=x1; x<=x2; x++)
                 if (umost[x] <= dmost[x])
                 {
                     umost[x] = 1;
                     dmost[x] = 0;
                     numhits--;
                 }
-            smostwall[smostwallcnt] = wallIndex;
+            smostwall[smostwallcnt] = z;
             smostwalltype[smostwallcnt] = 0;
             smostwallcnt++;
 
-            if ((searchit == 2) && (searchx >= startX) && (searchx <= endX))
-            {
+            if ((searchit == 2) && (searchx >= x1) && (searchx <= x2)){
                 searchit = 1;
-                searchsector = sectorIndex;
-                searchwall = pvWalls[wallIndex].worldWallId;
-                if (nextSectorIndex < 0)
-                    searchstat = 0;
-                else
-                    searchstat = 4;
+                searchsector = sectnum;
+                searchwall = wallnum;
+                if (nextsectnum < 0) searchstat = 0;
+                else searchstat = 4;
             }
         }
     }
