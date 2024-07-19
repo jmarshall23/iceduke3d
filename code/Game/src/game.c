@@ -8062,22 +8062,55 @@ void printCenteredWithBackground(const char* str, int row) {
     printf("\n");
 }
 
+void bringConsoleToFront() {
+    HWND consoleWindow = GetConsoleWindow();
+    if (consoleWindow != NULL) {
+        SetForegroundWindow(consoleWindow);
+    }
+}
 
+
+void centerConsoleWindow() {
+    HWND consoleWindow = GetConsoleWindow();
+    if (consoleWindow != NULL) {
+        RECT rect;
+        GetWindowRect(consoleWindow, &rect);
+
+        int consoleWidth = rect.right - rect.left;
+        int consoleHeight = rect.bottom - rect.top;
+
+        int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+        int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+
+        int posX = (screenWidth - consoleWidth) / 2;
+        int posY = (screenHeight - consoleHeight) / 2;
+
+        MoveWindow(consoleWindow, posX, posY, consoleWidth, consoleHeight, TRUE);
+    }
+}
 
 int main(int argc,char  **argv)
 {
     int32_t i, j;
 	int32_t filehandle;
-
-	
 	uint8_t  kbdKey;
 	uint8_t  *exe;
 
-    // Clear the screen
-    printf("\033[2J");
-
     // Set the console window title
     SetConsoleTitle("Duke Nukem 3D");
+
+    // Delay slightly so the window can be brought to the front.
+    Sleep(100);
+
+    // Center the console window
+    centerConsoleWindow();
+
+    // Bring the console window to the front
+    bringConsoleToFront();
+
+
+    // Clear the screen
+    printf("\033[2J");
 
     // Print the centered head string with red background
     printCenteredWithBackground("Duke Nukem 3D v1.5 - Atomic Edition", 1);
