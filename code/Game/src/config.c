@@ -595,9 +595,7 @@ void CONFIG_ReadSetup( void )
    int32 dummy;
    char  commmacro[] = COMMMACRO;
    FILE* setup_file_hdl;
-
-   printf("CONFIG_ReadSetup...\n");
-   
+  
    if (!SafeFileExists(setupfilename))
       {
 		// FIX_00011: duke3d.cfg not needed anymore to start the game. Will create a default one

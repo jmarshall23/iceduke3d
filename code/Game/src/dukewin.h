@@ -3,11 +3,7 @@
 
 #pragma warning(disable:4761)
 
-#ifdef _DEBUG
-#define STUBBED(x) printf("STUB: %s in %s:%d\n", x, __FILE__, __LINE__)
-#else
 #define STUBBED(x)
-#endif
 
 #define PATH_SEP_CHAR '\\'
 #define PATH_SEP_STR  "\\"
