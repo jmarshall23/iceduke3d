@@ -3,6 +3,7 @@
 
 #define DNGAMEDLL_VERSION       2
 
+#include <stdlib.h>
 #include "defs.h"
 
 typedef struct GameDLLExports_s {
@@ -317,3 +318,114 @@ extern GameDLLImports_t *imports;
 #define definevolumename(id, name) imports->definevolumename(id, name)
 #define defineskillname(id, name) imports->defineskillname(id, name)
 #define definequote(id, str) imports->definequote(id, str)
+
+// Definition of ConAction
+#ifdef __cplusplus
+struct ConAction {
+#else
+typedef struct {
+#endif
+    int startframe;
+    int frames;
+    int viewtype;
+    int invvalue;
+    int delay;
+
+#ifdef __cplusplus
+    ConAction()
+    {
+        this->startframe = 0;
+        this->frames = 0;
+        this->viewtype = 0;
+        this->invvalue = 0;
+        this->delay = 0;
+    }
+    ConAction(int startframe, int frames, int viewtype, int invvalue, int delay) {
+        this->startframe = startframe;
+        this->frames = frames;
+        this->viewtype = viewtype;
+        this->invvalue = invvalue;
+        this->delay = delay;
+    }
+#endif
+
+#ifdef __cplusplus
+};
+#else
+} ConAction;
+#endif
+
+__forceinline int ConAction_get_index(const ConAction* action, int i) {
+    switch (i) {
+    case 0:
+        return action->startframe;
+    case 1:
+        return action->frames;
+    case 2:
+        return action->viewtype;
+    case 3:
+        return action->invvalue;
+    case 4:
+        return action->delay;
+    default:
+        return -1; // Error value
+    }
+}
+
+// Definition of MoveAction
+typedef struct {
+    int horizontal;
+    int vertical;
+} MoveAction;
+
+__forceinline MoveAction* MoveAction_create(int horizontal, int vertical) {
+    MoveAction* action = (MoveAction*)malloc(sizeof(MoveAction));
+    action->horizontal = horizontal;
+    action->vertical = vertical;
+    return action;
+}
+
+__forceinline int MoveAction_get_index(const MoveAction* action, int i) {
+    switch (i) {
+    case 0:
+        return action->horizontal;
+    case 1:
+        return action->vertical;
+    default:
+        return -1; // Error value
+    }
+}
+
+// Definition of AIAction
+typedef struct {
+    ConAction* action;
+    MoveAction* moveAction;
+    int val;
+} AIAction;
+
+__forceinline AIAction* AIAction_create(ConAction* action, MoveAction* moveAction, int val, int unknown) {
+    AIAction* aiAction = (AIAction*)malloc(sizeof(AIAction));
+    aiAction->action = action;
+    aiAction->moveAction = moveAction;
+    aiAction->val = val;
+    return aiAction;
+}
+
+// Definition of ScriptActorRegistration
+typedef void (*Function_t)();
+
+typedef struct {
+    Function_t func;
+    int aiType;
+    int aiType2;
+    ConAction* action;
+} ScriptActorRegistration;
+
+__forceinline ScriptActorRegistration* ScriptActorRegistration_create(Function_t func, int aiType, int aiType2, ConAction* action) {
+    ScriptActorRegistration* registration = (ScriptActorRegistration*)malloc(sizeof(ScriptActorRegistration));
+    registration->func = func;
+    registration->aiType = aiType;
+    registration->aiType2 = aiType2;
+    registration->action = action;
+    return registration;
+}

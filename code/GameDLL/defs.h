@@ -1,1221 +1,1309 @@
-/*
---------------------------------------------------------------------------------
-Duke Nukem 3D Version 1.4
-By Todd Replogle
-(c) 1996 3D Realms Entertainment
---------------------------------------------------------------------------------
-*/
-
-#define SECTOREFFECTOR 1
-#define ACTIVATOR 2
-#define TOUCHPLATE 3
-#define ACTIVATORLOCKED 4
-#define MUSICANDSFX 5
-#define LOCATORS 6
-#define CYCLER 7
-#define MASTERSWITCH 8
-#define RESPAWN 9
-#define GPSPEED 10
-#define ARROW 20
-#define FIRSTGUNSPRITE 21
-#define CHAINGUNSPRITE 22
-#define RPGSPRITE 23
-#define FREEZESPRITE 24
-#define SHRINKERSPRITE 25
-#define HEAVYHBOMB 26
-#define TRIPBOMBSPRITE 27
-#define SHOTGUNSPRITE 28
-#define DEVISTATORSPRITE 29
-#define HEALTHBOX 30
-#define AMMOBOX 31
-#define GROWSPRITEICON 32
-#define INVENTORYBOX 33
-#define FREEZEAMMO 37
-#define AMMO 40
-#define BATTERYAMMO 41
-#define DEVISTATORAMMO 42
-#define RPGAMMO 44
-#define GROWAMMO 45
-#define CRYSTALAMMO 46
-#define HBOMBAMMO 47
-#define AMMOLOTS 48
-#define SHOTGUNAMMO 49
-#define COLA 51
-#define SIXPAK 52
-#define FIRSTAID 53
-#define SHIELD 54
-#define STEROIDS 55
-#define AIRTANK 56
-#define JETPACK 57
-#define HEATSENSOR 59
-#define ACCESSCARD 60
-#define BOOTS 61
-#define MIRRORBROKE 70
-#define CLOUDYOCEAN 78
-#define CLOUDYSKIES 79
-#define MOONSKY1 80
-#define MOONSKY2 81
-#define MOONSKY3 82
-#define MOONSKY4 83
-#define BIGORBIT1 84
-#define BIGORBIT2 85
-#define BIGORBIT3 86
-#define BIGORBIT4 87
-#define BIGORBIT5 88
-#define LA 89
-#define REDSKY1 98
-#define REDSKY2 99
-#define ATOMICHEALTH 100
-#define TECHLIGHT2 120
-#define TECHLIGHTBUST2 121
-#define TECHLIGHT4 122
-#define TECHLIGHTBUST4 123
-#define WALLLIGHT4 124
-#define WALLLIGHTBUST4 125
-#define ACCESSSWITCH 130
-#define SLOTDOOR 132
-#define LIGHTSWITCH 134
-#define SPACEDOORSWITCH 136
-#define SPACELIGHTSWITCH 138
-#define FRANKENSTINESWITCH 140
-#define NUKEBUTTON 142
-#define MULTISWITCH 146
-#define DOORTILE5 150
-#define DOORTILE6 151
-#define DOORTILE1 152
-#define DOORTILE2 153
-#define DOORTILE3 154
-#define DOORTILE4 155
-#define DOORTILE7 156
-#define DOORTILE8 157
-#define DOORTILE9 158
-#define DOORTILE10 159
-#define DOORSHOCK 160
-#define DIPSWITCH 162
-#define DIPSWITCH2 164
-#define TECHSWITCH 166
-#define DIPSWITCH3 168
-#define ACCESSSWITCH2 170
-#define REFLECTWATERTILE 180
-#define FLOORSLIME 200
-#define BIGFORCE 230
-#define EPISODE 247
-#define MASKWALL9 255
-#define W_LIGHT 260
-#define SCREENBREAK1 263
-#define SCREENBREAK2 264
-#define SCREENBREAK3 265
-#define SCREENBREAK4 266
-#define SCREENBREAK5 267
-#define SCREENBREAK6 268
-#define SCREENBREAK7 269
-#define SCREENBREAK8 270
-#define SCREENBREAK9 271
-#define SCREENBREAK10 272
-#define SCREENBREAK11 273
-#define SCREENBREAK12 274
-#define SCREENBREAK13 275
-#define MASKWALL1 285
-#define W_TECHWALL1 293
-#define W_TECHWALL2 297
-#define W_TECHWALL15 299
-#define W_TECHWALL3 301
-#define W_TECHWALL4 305
-#define W_TECHWALL10 306
-#define W_TECHWALL16 307
-#define WATERTILE2 336
-#define BPANNEL1 341
-#define PANNEL1 342
-#define PANNEL2 343
-#define WATERTILE 344
-#define STATIC 351
-#define W_SCREENBREAK 357
-#define W_HITTECHWALL3 360
-#define W_HITTECHWALL4 361
-#define W_HITTECHWALL2 362
-#define W_HITTECHWALL1 363
-#define MASKWALL10 387
-#define MASKWALL11 391
-#define DOORTILE22 395
-#define FANSPRITE 407
-#define FANSPRITEBROKE 411
-#define FANSHADOW 412
-#define FANSHADOWBROKE 416
-#define DOORTILE18 447
-#define DOORTILE19 448
-#define DOORTILE20 449
-#// define SPACESHUTTLE 487
-#define SATELLITE 489
-#define VIEWSCREEN2 499
-#define VIEWSCREENBROKE 501
-#define VIEWSCREEN 502
-#define GLASS 503
-#define GLASS2 504
-#define STAINGLASS1 510
-#define MASKWALL5 514
-#define SATELITE 516
-#define FUELPOD 517
-#define SLIMEPIPE 538
-#define CRACK1 546
-#define CRACK2 547
-#define CRACK3 548
-#define CRACK4 549
-#define FOOTPRINTS 550
-#define DOMELITE 551
-#define CAMERAPOLE 554
-#define CHAIR1 556
-#define CHAIR2 557
-#define BROKENCHAIR 559
-#define MIRROR 560
-#define WATERFOUNTAIN 563
-#define WATERFOUNTAINBROKE 567
-#define FEMMAG1 568
-#define TOILET 569
-#define STALL 571
-#define STALLBROKE 573
-#define FEMMAG2 577
-#define REACTOR2 578
-#define REACTOR2BURNT 579
-#define REACTOR2SPARK 580
-#define GRATE1 595
-#define BGRATE1 596
-#define SOLARPANNEL 602
-#define NAKED1 603
-#define ANTENNA 607
-#define MASKWALL12 609
-#define TOILETBROKE 615
-#define PIPE2 616
-#define PIPE1B 617
-#define PIPE3 618
-#define PIPE1 619
-#define CAMERA1 621
-#define BRICK 626
-#define SPLINTERWOOD 630
-#define PIPE2B 633
-#define BOLT1 634
-#define W_NUMBERS 640
-#define WATERDRIP 660
-#define WATERBUBBLE 661
-#define WATERBUBBLEMAKER 662
-#define W_FORCEFIELD 663
-#define VACUUM 669
-#define FOOTPRINTS2 672
-#define FOOTPRINTS3 673
-#define FOOTPRINTS4 674
-#define EGG 675
-#define SCALE 678
-#define CHAIR3 680
-#define CAMERALIGHT 685
-#define MOVIECAMERA 686
-#define IVUNIT 689
-#define POT1 694
-#define POT2 695
-#define POT3 697
-#define PIPE3B 700
-#define WALLLIGHT3 701
-#define WALLLIGHTBUST3 702
-#define WALLLIGHT1 703
-#define WALLLIGHTBUST1 704
-#define WALLLIGHT2 705
-#define WALLLIGHTBUST2 706
-#define LIGHTSWITCH2 712
-#define WAITTOBESEATED 716
-#define DOORTILE14 717
-#define STATUE 753
-#define MIKE 762
-#define VASE 765
-#define SUSHIPLATE1 768
-#define SUSHIPLATE2 769
-#define SUSHIPLATE3 774
-#define SUSHIPLATE4 779
-#define DOORTILE16 781
-#define SUSHIPLATE5 792
-#define OJ 806
-#define MASKWALL13 830
-#define HURTRAIL 859
-#define POWERSWITCH1 860
-#define LOCKSWITCH1 862
-#define POWERSWITCH2 864
-#define ATM 867
-#define STATUEFLASH 869
-#define ATMBROKE 888
-#define BIGHOLE2 893
-#define STRIPEBALL 901
-#define QUEBALL 902
-#define POCKET 903
-#define WOODENHORSE 904
-#define TREE1 908
-#define TREE2 910
-#define CACTUS 911
-#define MASKWALL2 913
-#define MASKWALL3 914
-#define MASKWALL4 915
-#define FIREEXT 916
-#define TOILETWATER 921
-#define NEON1 925
-#define NEON2 926
-#define CACTUSBROKE 939
-#define BOUNCEMINE 940
-#define BROKEFIREHYDRENT 950
-#define BOX 951
-#define BULLETHOLE 952
-#define BOTTLE1 954
-#define BOTTLE2 955
-#define BOTTLE3 956
-#define BOTTLE4 957
-#define FEMPIC5 963
-#define FEMPIC6 964
-#define FEMPIC7 965
-#define HYDROPLANT 969
-#define OCEANSPRITE1 971
-#define OCEANSPRITE2 972
-#define OCEANSPRITE3 973
-#define OCEANSPRITE4 974
-#define OCEANSPRITE5 975
-#define GENERICPOLE 977
-#define CONE 978
-#define HANGLIGHT 979
-#define HYDRENT 981
-#define MASKWALL14 988
-#define TIRE 990
-#define PIPE5 994
-#define PIPE6 995
-#define PIPE4 996
-#define PIPE4B 997
-#define BROKEHYDROPLANT 1003
-#define PIPE5B 1005
-#define NEON3 1007
-#define NEON4 1008
-#define NEON5 1009
-#define BOTTLE5 1012
-#define BOTTLE6 1013
-#define BOTTLE8 1014
-#define SPOTLITE 1020
-#define HANGOOZ 1022
-#define MASKWALL15 1024
-#define BOTTLE7 1025
-#define HORSEONSIDE 1026
-#define GLASSPIECES 1031
-#define HORSELITE 1034
-#define DONUTS 1045
-#define NEON6 1046
-#define MASKWALL6 1059
-#define CLOCK 1060
-#define RUBBERCAN 1062
-#define BROKENCLOCK 1067
-#define PLUG 1069
-#define OOZFILTER 1079
-#define FLOORPLASMA 1082
-#define REACTOR 1088
-#define REACTORSPARK 1092
-#define REACTORBURNT 1096
-#define DOORTILE15 1102
-#define HANDSWITCH 1111
-#define CIRCLEPANNEL 1113
-#define CIRCLEPANNELBROKE 1114
-#define PULLSWITCH 1122
-#define MASKWALL8 1124
-#define BIGHOLE 1141
-#define ALIENSWITCH 1142
-#define DOORTILE21 1144
-#define HANDPRINTSWITCH 1155
-#define BOTTLE10 1157
-#define BOTTLE11 1158
-#define BOTTLE12 1159
-#define BOTTLE13 1160
-#define BOTTLE14 1161
-#define BOTTLE15 1162
-#define BOTTLE16 1163
-#define BOTTLE17 1164
-#define BOTTLE18 1165
-#define BOTTLE19 1166
-#define DOORTILE17 1169
-#define MASKWALL7 1174
-#define JAILBARBREAK 1175
-#define DOORTILE11 1178
-#define DOORTILE12 1179
-#define VENDMACHINE 1212
-#define VENDMACHINEBROKE 1214
-#define COLAMACHINE 1215
-#define COLAMACHINEBROKE 1217
-#define CRANEPOLE 1221
-#define CRANE 1222
-#define BARBROKE 1225
-#define BLOODPOOL 1226
-#define NUKEBARREL 1227
-#define NUKEBARRELDENTED 1228
-#define NUKEBARRELLEAKED 1229
-#define CANWITHSOMETHING 1232
-#define MONEY 1233
-#define BANNER 1236
-#define EXPLODINGBARREL 1238
-#define EXPLODINGBARREL2 1239
-#define FIREBARREL 1240
-#define SEENINE 1247
-#define SEENINEDEAD 1248
-#define STEAM 1250
-#define CEILINGSTEAM 1255
-#define PIPE6B 1260
-#define TRANSPORTERBEAM 1261
-#define RAT 1267
-#define TRASH 1272
-#define FEMPIC1 1280
-#define FEMPIC2 1289
-#define BLANKSCREEN 1293
-#define PODFEM1 1294
-#define FEMPIC3 1298
-#define FEMPIC4 1306
-#define FEM1 1312
-#define FEM2 1317
-#define FEM3 1321
-#define FEM5 1323
-#define BLOODYPOLE 1324
-#define FEM4 1325
-#define FEM6 1334
-#define FEM6PAD 1335
-#define FEM8 1336
-#define HELECOPT 1346
-#define FETUSJIB 1347
-#define HOLODUKE 1348
-#define SPACEMARINE 1353
-#define INDY 1355
-#define FETUS 1358
-#define FETUSBROKE 1359
-#define MONK 1352
-#define LUKE 1354
-#define COOLEXPLOSION1 1360
-#define WATERSPLASH2 1380
-#define FIREVASE 1390
-#define SCRATCH 1393
-#define FEM7 1395
-#define APLAYERTOP 1400
-#define APLAYER 1405
-#define PLAYERONWATER 1420
-#define DUKELYINGDEAD 1518
-#define DUKETORSO 1520
-#define DUKEGUN 1528
-#define DUKELEG 1536
-#define SHARK 1550
-#define BLOOD 1620
-#define FIRELASER 1625
-#define TRANSPORTERSTAR 1630
-#define SPIT 1636
-#define LOOGIE 1637
-#define FIST 1640
-#define FREEZEBLAST 1641
-#define DEVISTATORBLAST 1642
-#define SHRINKSPARK 1646
-#define TONGUE 1647
-#define MORTER 1650
-#define SHRINKEREXPLOSION 1656
-#define RADIUSEXPLOSION 1670
-#define FORCERIPPLE 1671
-#define LIZTROOP 1680
-#define LIZTROOPRUNNING 1681
-#define LIZTROOPSTAYPUT 1682
-#define LIZTOP 1705
-#define LIZTROOPSHOOT 1715
-#define LIZTROOPJETPACK 1725
-#define LIZTROOPDSPRITE 1734
-#define LIZTROOPONTOILET 1741
-#define LIZTROOPJUSTSIT 1742
-#define LIZTROOPDUCKING 1744
-#define HEADJIB1 1768
-#define ARMJIB1 1772
-#define LEGJIB1 1776
-#define CANNONBALL 1817
-#define OCTABRAIN 1820
-#define OCTABRAINSTAYPUT 1821
-#define OCTATOP 1845
-#define OCTADEADSPRITE 1855
-#define INNERJAW 1860
-#define DRONE 1880
-#define EXPLOSION2 1890
-#define COMMANDER 1920
-#define COMMANDERSTAYPUT 1921
-#define RECON 1960
-#define TANK 1975
-#define PIGCOP 2000
-#define PIGCOPSTAYPUT 2001
-#define PIGCOPDIVE 2045
-#define PIGCOPDEADSPRITE 2060
-#define PIGTOP 2061
-#define LIZMAN 2120
-#define LIZMANSTAYPUT 2121
-#define LIZMANSPITTING 2150
-#define LIZMANFEEDING 2160
-#define LIZMANJUMP 2165
-#define LIZMANDEADSPRITE 2185
-#define FECES 2200
-#define LIZMANHEAD1 2201
-#define LIZMANARM1 2205
-#define LIZMANLEG1 2209
-#define EXPLOSION2BOT 2219
-#define USERWEAPON 2235
-#define HEADERBAR 2242
-#define JIBS1 2245
-#define JIBS2 2250
-#define JIBS3 2255
-#define JIBS4 2260
-#define JIBS5 2265
-#define BURNING 2270
-#define FIRE 2271
-#define JIBS6 2286
-#define BLOODSPLAT1 2296
-#define BLOODSPLAT3 2297
-#define BLOODSPLAT2 2298
-#define BLOODSPLAT4 2299
-#define OOZ 2300
-#define OOZ2 2309
-#define WALLBLOOD1 2301
-#define WALLBLOOD2 2302
-#define WALLBLOOD3 2303
-#define WALLBLOOD4 2304
-#define WALLBLOOD5 2305
-#define WALLBLOOD6 2306
-#define WALLBLOOD7 2307
-#define WALLBLOOD8 2308
-#define BURNING2 2310
-#define FIRE2 2311
-#define CRACKKNUCKLES 2324
-#define SMALLSMOKE 2329
-#define SMALLSMOKEMAKER 2330
-#define FLOORFLAME 2333
-#define ROTATEGUN 2360
-#define GREENSLIME 2370
-#define WATERDRIPSPLASH 2380
-#define SCRAP6 2390
-#define SCRAP1 2400
-#define SCRAP2 2404
-#define SCRAP3 2408
-#define SCRAP4 2412
-#define SCRAP5 2416
-#define ORGANTIC 2420
-#define BETAVERSION 2440
-#define PLAYERISHERE 2442
-#define PLAYERWASHERE 2443
-#define SELECTDIR 2444
-#define F1HELP 2445
-#define NOTCHON 2446
-#define NOTCHOFF 2447
-#define GROWSPARK 2448
-#define DUKEICON 2452
-#define BADGUYICON 2453
-#define FOODICON 2454
-#define GETICON 2455
-#define MENUSCREEN 2456
-#define MENUBAR 2457
-#define KILLSICON 2458
-#define FIRSTAID_ICON 2460
-#define HEAT_ICON 2461
-#define BOTTOMSTATUSBAR 2462
-#define BOOT_ICON 2463
-#define FRAGBAR 2465
-#define JETPACK_ICON 2467
-#define AIRTANK_ICON 2468
-#define STEROIDS_ICON 2469
-#define HOLODUKE_ICON 2470
-#define ACCESS_ICON 2471
-#define DIGITALNUM 2472
-#define DUKECAR 2491
-#define CAMCORNER 2482
-#define CAMLIGHT 2484
-#define LOGO 2485
-#define TITLE 2486
-#define NUKEWARNINGICON 2487
-#define MOUSECURSOR 2488
-#define SLIDEBAR 2489
-#define DREALMS 2492
-#define BETASCREEN 2493
-#define WINDOWBORDER1 2494
-#define TEXTBOX 2495
-#define WINDOWBORDER2 2496
-#define DUKENUKEM 2497
-#define THREEDEE 2498
-#define INGAMEDUKETHREEDEE 2499
-#define TENSCREEN 2500
-#define PLUTOPAKSPRITE 2501
-#define DEVISTATOR 2510
-#define KNEE 2521
-#define CROSSHAIR 2523
-#define FIRSTGUN 2524
-#define FIRSTGUNRELOAD 2528
-#define FALLINGCLIP 2530
-#define CLIPINHAND 2531
-#define HAND 2532
-#define SHELL 2533
-#define SHOTGUNSHELL 2535
-#define CHAINGUN 2536
-#define RPGGUN 2544
-#define RPGMUZZLEFLASH 2545
-#define FREEZE 2548
-#define CATLITE 2552
-#define SHRINKER 2556
-#define HANDHOLDINGLASER 2563
-#define TRIPBOMB 2566
-#define LASERLINE 2567
-#define HANDHOLDINGACCESS 2568
-#define HANDREMOTE 2570
-#define HANDTHROW 2573
-#define TIP 2576
-#define GLAIR 2578
-#define SCUBAMASK 2581
-#define SPACEMASK 2584
-#define FORCESPHERE 2590
-#define SHOTSPARK1 2595
-#define RPG 2605
-#define LASERSITE 2612
-#define SHOTGUN 2613
-#define BOSS1 2630
-#define BOSS1STAYPUT 2631
-#define BOSS1SHOOT 2660
-#define BOSS1LOB 2670
-#define BOSSTOP 2696
-#define BOSS2 2710
-#define BOSS3 2760
-#define SPINNINGNUKEICON 2813
-#define BIGFNTCURSOR 2820
-#define SMALLFNTCURSOR 2821
-#define STARTALPHANUM 2822
-#define ENDALPHANUM 2915
-#define BIGALPHANUM 2940
-#define BIGPERIOD 3002
-#define BIGCOMMA 3003
-#define BIGX 3004
-#define BIGQ 3005
-#define BIGSEMI 3006
-#define BIGCOLIN 3007
-#define THREEBYFIVE 3010
-#define BIGAPPOS 3022
-#define BLANK 3026
-#define MINIFONT 3072
-#define BUTTON1 3164
-#define GLASS3 3187
-#define RESPAWNMARKERRED 3190
-#define RESPAWNMARKERYELLOW 3200
-#define RESPAWNMARKERGREEN 3210
-#define BONUSSCREEN 3240
-#define VIEWBORDER 3250
-#define VICTORY1 3260
-#define ORDERING 3270
-#define TEXTSTORY 3280
-#define LOADSCREEN 3281
-#define BORNTOBEWILDSCREEN 3370
-#define BLIMP 3400
-#define FEM9 3450
-#define FOOTPRINT 3701
-#define POOP 4094
-#define FRAMEEFFECT1 4095
-#define PANNEL3 4099
-#define SCREENBREAK14 4120
-#define SCREENBREAK15 4123
-#define SCREENBREAK19 4125
-#define SCREENBREAK16 4127
-#define SCREENBREAK17 4128
-#define SCREENBREAK18 4129
-#define W_TECHWALL11 4130
-#define W_TECHWALL12 4131
-#define W_TECHWALL13 4132
-#define W_TECHWALL14 4133
-#define W_TECHWALL5 4134
-#define W_TECHWALL6 4136
-#define W_TECHWALL7 4138
-#define W_TECHWALL8 4140
-#define W_TECHWALL9 4142
-#define BPANNEL3 4100
-#define W_HITTECHWALL16 4144
-#define W_HITTECHWALL10 4145
-#define W_HITTECHWALL15 4147
-#define W_MILKSHELF 4181
-#define W_MILKSHELFBROKE 4203
-#define PURPLELAVA 4240
-#define LAVABUBBLE 4340
-#define DUKECUTOUT 4352
-#define TARGET 4359
-#define GUNPOWDERBARREL 4360
-#define DUCK 4361
-#define HATRACK 4367
-#define DESKLAMP 4370
-#define COFFEEMACHINE 4372
-#define CUPS 4373
-#define GAVALS 4374
-#define GAVALS2 4375
-#define POLICELIGHTPOLE 4377
-#define FLOORBASKET 4388
-#define PUKE 4389
-#define DOORTILE23 4391
-#define TOPSECRET 4396
-#define SPEAKER 4397
-#define TEDDYBEAR 4400
-#define ROBOTDOG 4402
-#define ROBOTPIRATE 4404
-#define ROBOTMOUSE 4407
-#define MAIL 4410
-#define MAILBAG 4413
-#define HOTMEAT 4427
-#define COFFEEMUG 4438
-#define DONUTS2 4440
-#define TRIPODCAMERA 4444
-#define METER 4453
-#define DESKPHONE 4454
-#define GUMBALLMACHINE 4458
-#define GUMBALLMACHINEBROKE 4459
-#define PAPER 4460
-#define MACE 4464
-#define GENERICPOLE2 4465
-#define XXXSTACY 4470
-#define WETFLOOR 4495
-#define BROOM 4496
-#define MOP 4497
-#define LETTER 4502
-#define PIRATE1A 4510
-#define PIRATE4A 4511
-#define PIRATE2A 4512
-#define PIRATE5A 4513
-#define PIRATE3A 4514
-#define PIRATE6A 4515
-#define PIRATEHALF 4516
-#define CHESTOFGOLD 4520
-#define SIDEBOLT1 4525
-#define FOODOBJECT1 4530
-#define FOODOBJECT2 4531
-#define FOODOBJECT3 4532
-#define FOODOBJECT4 4533
-#define FOODOBJECT5 4534
-#define FOODOBJECT6 4535
-#define FOODOBJECT7 4536
-#define FOODOBJECT8 4537
-#define FOODOBJECT9 4538
-#define FOODOBJECT10 4539
-#define FOODOBJECT11 4540
-#define FOODOBJECT12 4541
-#define FOODOBJECT13 4542
-#define FOODOBJECT14 4543
-#define FOODOBJECT15 4544
-#define FOODOBJECT16 4545
-#define FOODOBJECT17 4546
-#define FOODOBJECT18 4547
-#define FOODOBJECT19 4548
-#define FOODOBJECT20 4549
-#define HEADLAMP 4550
-#define TAMPON 4557
-#define SKINNEDCHICKEN 4554
-#define FEATHEREDCHICKEN 4555
-#define ROBOTDOG2 4560
-#define JOLLYMEAL 4569
-#define DUKEBURGER 4570
-#define SHOPPINGCART 4576
-#define CANWITHSOMETHING2 4580
-#define CANWITHSOMETHING3 4581
-#define CANWITHSOMETHING4 4582
-#define SNAKEP 4590
-#define DOLPHIN1 4591
-#define DOLPHIN2 4592
-#define NEWBEAST 4610
-#define NEWBEASTSTAYPUT 4611
-#define NEWBEASTJUMP 4690
-#define NEWBEASTHANG 4670
-#define NEWBEASTHANGDEAD 4671
-#define BOSS4 4740
-#define BOSS4STAYPUT 4741
-#define FEM10 4864
-#define TOUGHGAL 4866
-#define MAN 4871
-#define MAN2 4872
-#define WOMAN 4874
-#define PLEASEWAIT 4887
-#define NATURALLIGHTNING 4890
-#define WEATHERWARN 4893
-#define DUKETAG 4900
-#define SIGN1 4909
-#define SIGN2 4912
-#define JURYGUY 4943
-#
-#
-#// These tile positions are reserved!
-#
-#define RESERVEDSLOT1 6132
-#define RESERVEDSLOT2 6133
-#define RESERVEDSLOT3 6134
-#define RESERVEDSLOT4 6135
-#define RESERVEDSLOT5 6136
-#define RESERVEDSLOT6 6132
-#define RESERVEDSLOT7 6133
-#define RESERVEDSLOT8 6134
-#define RESERVEDSLOT9 6135
-#define RESERVEDSLOT10 6136
-#define RESERVEDSLOT11 6137
-#define RESERVEDSLOT12 6138
-#define RESERVEDSLOT13 6139
-#define RESERVEDSLOT14 6140
-#define RESERVEDSLOT15 6141
-#define RESERVEDSLOT16 6142
-#define RESERVEDSLOT17 6143
-#
-#// Defines weapon, not to be used with the 'shoot' keyword.
-#
-#define KNEE_WEAPON         0
-#define PISTOL_WEAPON       1
-#define SHOTGUN_WEAPON      2
-#define CHAINGUN_WEAPON     3
-#define RPG_WEAPON          4
-#define HANDBOMB_WEAPON     5
-#define SHRINKER_WEAPON     6
-#define DEVISTATOR_WEAPON   7
-#define TRIPBOMB_WEAPON     8
-#define FREEZE_WEAPON       9
-#define HANDREMOTE_WEAPON   10
-#define GROW_WEAPON         11
-#
-#// Defines the motion characteristics of an actor
-#define faceplayer 1
-#define geth 2
-#define getv 4
-#define randomangle 8
-#define faceplayerslow 16
-#define spin 32
-#define faceplayersmart 64
-#define fleeenemy 128
-#define jumptoplayer 257
-#define seekplayer 512
-#define furthestdir 1024
-#define dodgebullet 4096
-#
-#// Some misc defines
-#define NO       0
-#define YES      1
-#
-#// Defines for 'useractor' keyword
-#define notenemy       0
-#define enemy          1
-#define enemystayput   2
-#
-#// Player Actions.
-#define pstanding 1
-#define pwalking 2
-#define prunning 4
-#define pducking 8
-#define pfalling 16
-#define pjumping 32
-#define phigher 64
-#define pwalkingback 128
-#define prunningback 256
-#define pkicking 512
-#define pshrunk 1024
-#define pjetpack 2048
-#define ponsteroids 4096
-#define ponground 8192
-#define palive 16384
-#define pdead 32768
-#define pfacing 65536
-#
-#
-#define GET_STEROIDS     0
-#define GET_SHIELD       1
-#define GET_SCUBA        2
-#define GET_HOLODUKE     3
-#define GET_JETPACK      4
-#define GET_ACCESS       6
-#define GET_HEATS        7
-#define GET_FIRSTAID     9
-#define GET_BOOTS       10
-#
-#
-#define KICK_HIT                         0
-#define PISTOL_RICOCHET                  1
-#define PISTOL_BODYHIT                   2
-#define PISTOL_FIRE                      3
-#define EJECT_CLIP                       4
-#define INSERT_CLIP                      5
-#define CHAINGUN_FIRE                    6
-#define RPG_SHOOT                        7
-#define POOLBALLHIT                      8
-#define RPG_EXPLODE                      9
-#define CAT_FIRE                        10
-#define SHRINKER_FIRE                   11
-#define ACTOR_SHRINKING                 12
-#define PIPEBOMB_BOUNCE                 13
-#define PIPEBOMB_EXPLODE                14
-#define LASERTRIP_ONWALL                15
-#define LASERTRIP_ARMING                16
-#define LASERTRIP_EXPLODE               17
-#define VENT_BUST                       18
-#define GLASS_BREAKING                  19
-#define GLASS_HEAVYBREAK                20
-#define SHORT_CIRCUIT                   21
-#define ITEM_SPLASH                     22
-#define DUKE_BREATHING                  23
-#define DUKE_EXHALING                   24
-#define DUKE_GASP                       25
-#define SLIM_RECOG                      26
-#// define ENDSEQVOL3SND1                  27
-#define DUKE_URINATE                    28
-#define ENDSEQVOL3SND2                  29
-#define ENDSEQVOL3SND3                  30
-#define DUKE_PASSWIND                   32
-#define DUKE_CRACK                      33
-#define SLIM_ATTACK                     34
-#define SOMETHINGHITFORCE               35
-#define DUKE_DRINKING                   36
-#define DUKE_KILLED1                    37
-#define DUKE_GRUNT                      38
-#define DUKE_HARTBEAT                   39
-#define DUKE_ONWATER                    40
-#define DUKE_DEAD                       41
-#define DUKE_LAND                       42
-#define DUKE_WALKINDUCTS                43
-#define DUKE_GLAD                       44
-#define DUKE_YES                        45
-#define DUKE_HEHE                       46
-#define DUKE_SHUCKS                     47
-#define DUKE_UNDERWATER                 48
-#define DUKE_JETPACK_ON                 49
-#define DUKE_JETPACK_IDLE               50
-#define DUKE_JETPACK_OFF                51
-#define LIZTROOP_GROWL                  52
-#define LIZTROOP_TALK1                  53
-#define LIZTROOP_TALK2                  54
-#define LIZTROOP_TALK3                  55
-#define DUKETALKTOBOSS                  56
-#define LIZCAPT_GROWL                   57
-#define LIZCAPT_TALK1                   58
-#define LIZCAPT_TALK2                   59
-#define LIZCAPT_TALK3                   60
-#define LIZARD_BEG                      61
-#define LIZARD_PAIN                     62
-#define LIZARD_DEATH                    63
-#define LIZARD_SPIT                     64
-#define DRONE1_HISSRATTLE               65
-#define DRONE1_HISSSCREECH              66
-#define DUKE_TIP2                       67
-#define FLESH_BURNING                   68
-#define SQUISHED                        69
-#define TELEPORTER                      70
-#define ELEVATOR_ON                     71
-#define DUKE_KILLED3                    72
-#define ELEVATOR_OFF                    73
-#define DOOR_OPERATE1                   74
-#define SUBWAY                          75
-#define SWITCH_ON                       76
-#define FAN                             77
-#define DUKE_GETWEAPON3                 78
-#define FLUSH_TOILET                    79
-#define HOVER_CRAFT                     80
-#define EARTHQUAKE                      81
-#define INTRUDER_ALERT                  82
-#define END_OF_LEVEL_WARN               83
-#define ENGINE_OPERATING                84
-#define REACTOR_ON                      85
-#define COMPUTER_AMBIENCE               86
-#define GEARS_GRINDING                  87
-#define BUBBLE_AMBIENCE                 88
-#define MACHINE_AMBIENCE                89
-#define SEWER_AMBIENCE                  90
-#define WIND_AMBIENCE                   91
-#define SOMETHING_DRIPPING              92
-#define STEAM_HISSING                   93
-#define THEATER_BREATH                  94
-#define BAR_MUSIC                       95
-#define BOS1_ROAM                       96
-#define BOS1_RECOG                      97
-#define BOS1_ATTACK1                    98
-#define BOS1_PAIN                       99
-#define BOS1_DYING                     100
-#define BOS2_ROAM                      101
-#define BOS2_RECOG                     102
-#define BOS2_ATTACK                    103
-#define BOS2_PAIN                      104
-#define BOS2_DYING                     105
-#define GETATOMICHEALTH                106
-#define DUKE_GETWEAPON2                107
-#define BOS3_DYING                     108
-#define SHOTGUN_FIRE                   109
-#define PRED_ROAM                      110
-#define PRED_RECOG                     111
-#define PRED_ATTACK                    112
-#define PRED_PAIN                      113
-#define PRED_DYING                     114
-#define CAPT_ROAM                      115
-#define CAPT_ATTACK                    116
-#define CAPT_RECOG                     117
-#define CAPT_PAIN                      118
-#define CAPT_DYING                     119
-#define PIG_ROAM                       120
-#define PIG_RECOG                      121
-#define PIG_ATTACK                     122
-#define PIG_PAIN                       123
-#define PIG_DYING                      124
-#define RECO_ROAM                      125
-#define RECO_RECOG                     126
-#define RECO_ATTACK                    127
-#define RECO_PAIN                      128
-#define RECO_DYING                     129
-#define DRON_ROAM                      130
-#define DRON_RECOG                     131
-#define DRON_ATTACK1                   132
-#define DRON_PAIN                      133
-#define DRON_DYING                     134
-#define COMM_ROAM                      135
-#define COMM_RECOG                     136
-#define COMM_ATTACK                    137
-#define COMM_PAIN                      138
-#define COMM_DYING                     139
-#define OCTA_ROAM                      140
-#define OCTA_RECOG                     141
-#define OCTA_ATTACK1                   142
-#define OCTA_PAIN                      143
-#define OCTA_DYING                     144
-#define TURR_ROAM                      145
-#define TURR_RECOG                     146
-#define TURR_ATTACK                    147
-#define DUMPSTER_MOVE                  148
-#define SLIM_DYING                     149
-#define BOS3_ROAM                      150
-#define BOS3_RECOG                     151
-#define BOS3_ATTACK1                   152
-#define BOS3_PAIN                      153
-#define BOS1_ATTACK2                   154
-#define COMM_SPIN                      155
-#define BOS1_WALK                      156
-#define DRON_ATTACK2                   157
-#define THUD                           158
-#define OCTA_ATTACK2                   159
-#define WIERDSHOT_FLY                  160
-#define TURR_PAIN                      161
-#define TURR_DYING                     162
-#define SLIM_ROAM                      163
-#define LADY_SCREAM                    164
-#define DOOR_OPERATE2                  165
-#define DOOR_OPERATE3                  166
-#define DOOR_OPERATE4                  167
-#define BORNTOBEWILDSND                168
-#define SHOTGUN_COCK                   169
-#define GENERIC_AMBIENCE1              170
-#define GENERIC_AMBIENCE2              171
-#define GENERIC_AMBIENCE3              172
-#define GENERIC_AMBIENCE4              173
-#define GENERIC_AMBIENCE5              174
-#define GENERIC_AMBIENCE6              175
-#define BOS3_ATTACK2                   176
-#define GENERIC_AMBIENCE17             177
-#define GENERIC_AMBIENCE18             178
-#define GENERIC_AMBIENCE19             179
-#define GENERIC_AMBIENCE20             180
-#define GENERIC_AMBIENCE21             181
-#define GENERIC_AMBIENCE22             182
-#define SECRETLEVELSND                 183
-#define GENERIC_AMBIENCE8              184
-#define GENERIC_AMBIENCE9              185
-#define GENERIC_AMBIENCE10             186
-#define GENERIC_AMBIENCE11             187
-#define GENERIC_AMBIENCE12             188
-#define GENERIC_AMBIENCE13             189
-#define GENERIC_AMBIENCE14             190
-#define GENERIC_AMBIENCE15             192
-#define GENERIC_AMBIENCE16             193
-#define FIRE_CRACKLE                   194
-#define BONUS_SPEECH1                  195
-#define BONUS_SPEECH2                  196
-#define BONUS_SPEECH3                  197
-#define PIG_CAPTURE_DUKE               198
-#define BONUS_SPEECH4                  199
-#define DUKE_LAND_HURT                 200
-#define DUKE_HIT_STRIPPER1             201
-#define DUKE_TIP1                      202
-#define DUKE_KILLED2                   203
-#define PRED_ROAM2                     204
-#define PIG_ROAM2                      205
-#define DUKE_GETWEAPON1                206
-#define DUKE_SEARCH2                   207
-#define DUKE_CRACK2                    208
-#define DUKE_SEARCH                    209
-#define DUKE_GET                       210
-#define DUKE_LONGTERM_PAIN             211
-#define MONITOR_ACTIVE                 212
-#define NITEVISION_ONOFF               213
-#define DUKE_HIT_STRIPPER2             214
-#define DUKE_CRACK_FIRST               215
-#define DUKE_USEMEDKIT                 216
-#define DUKE_TAKEPILLS                 217
-#define DUKE_PISSRELIEF                218
-#define SELECT_WEAPON                  219
-#define WATER_GURGLE                   220
-#define DUKE_GETWEAPON4                221
-#define JIBBED_ACTOR1                  222
-#define JIBBED_ACTOR2                  223
-#define JIBBED_ACTOR3                  224
-#define JIBBED_ACTOR4                  225
-#define JIBBED_ACTOR5                  226
-#define JIBBED_ACTOR6                  227
-#define JIBBED_ACTOR7                  228
-#define DUKE_GOTHEALTHATLOW            229
-#define BOSSTALKTODUKE                 230
-#define WAR_AMBIENCE1                  231
-#define WAR_AMBIENCE2                  232
-#define WAR_AMBIENCE3                  233
-#define WAR_AMBIENCE4                  234
-#define WAR_AMBIENCE5                  235
-#define WAR_AMBIENCE6                  236
-#define WAR_AMBIENCE7                  237
-#define WAR_AMBIENCE8                  238
-#define WAR_AMBIENCE9                  239
-#define WAR_AMBIENCE10                 240
-#define ALIEN_TALK1                    241
-#define ALIEN_TALK2                    242
-#define EXITMENUSOUND                  243
-#define FLY_BY                         244
-#define DUKE_SCREAM                    245
-#define SHRINKER_HIT                   246
-#define RATTY                          247
-#define INTO_MENU                      248
-#define BONUSMUSIC                     249
-#define DUKE_BOOBY                     250
-#define DUKE_TALKTOBOSSFALL            251
-#define DUKE_LOOKINTOMIRROR            252
-#define PIG_ROAM3                      253
-#define KILLME                         254
-#define DRON_JETSND                    255
-#define SPACE_DOOR1                    256
-#define SPACE_DOOR2                    257
-#define SPACE_DOOR3                    258
-#define SPACE_DOOR4                    259
-#define SPACE_DOOR5                    260
-#define ALIEN_ELEVATOR1                261
-#define VAULT_DOOR                     262
-#define JIBBED_ACTOR13                 263
-#define DUKE_GETWEAPON6                264
-#define JIBBED_ACTOR8                  265
-#define JIBBED_ACTOR9                  266
-#define JIBBED_ACTOR10                 267
-#define JIBBED_ACTOR11                 268
-#define JIBBED_ACTOR12                 269
-#define DUKE_KILLED4                   270
-#define DUKE_KILLED5                   271
-#define ALIEN_SWITCH1                  272
-#define DUKE_STEPONFECES               273
-#define DUKE_LONGTERM_PAIN2            274
-#define DUKE_LONGTERM_PAIN3            275
-#define DUKE_LONGTERM_PAIN4            276
-#define COMPANB2                       277
-#define KTIT                           278
-#define HELICOP_IDLE                   279
-#define STEPNIT                        280
-#define SPACE_AMBIENCE1                281
-#define SPACE_AMBIENCE2                282
-#define SLIM_HATCH                     283
-#define RIPHEADNECK                    284
-#define FOUNDJONES                     285
-#define ALIEN_DOOR1                    286
-#define ALIEN_DOOR2                    287
-#define ENDSEQVOL3SND4                 288
-#define ENDSEQVOL3SND5                 289
-#define ENDSEQVOL3SND6                 290
-#define ENDSEQVOL3SND7                 291
-#define ENDSEQVOL3SND8                 292
-#define ENDSEQVOL3SND9                 293
-#define WHIPYOURASS                    294
-#define ENDSEQVOL2SND1                 295
-#define ENDSEQVOL2SND2                 296
-#define ENDSEQVOL2SND3                 297
-#define ENDSEQVOL2SND4                 298
-#define ENDSEQVOL2SND5                 299
-#define ENDSEQVOL2SND6                 300
-#define ENDSEQVOL2SND7                 301
-#define GENERIC_AMBIENCE23             302
-#define SOMETHINGFROZE                 303
-#define DUKE_LONGTERM_PAIN5            304
-#define DUKE_LONGTERM_PAIN6            305
-#define DUKE_LONGTERM_PAIN7            306
-#define DUKE_LONGTERM_PAIN8            307
-#define WIND_REPEAT                    308
-#define MYENEMY_ROAM                   309
-#define MYENEMY_HURT                   310
-#define MYENEMY_DEAD                   311
-#define MYENEMY_SHOOT                  312
-#define STORE_MUSIC                    313
-#define STORE_MUSIC_BROKE              314
-#define ACTOR_GROWING                  315
-#define NEWBEAST_ROAM                  316
-#define NEWBEAST_RECOG                 317
-#define NEWBEAST_ATTACK                318
-#define NEWBEAST_PAIN                  319
-#define NEWBEAST_DYING                 320
-#define NEWBEAST_SPIT                  321
-#define VOL4_1                         322
-#define SUPERMARKET                    323
-#define MOUSEANNOY                     324
-#define BOOKEM                         325
-#define SUPERMARKETCRY                 326
-#define DESTRUCT                       327
-#define EATFOOD                        328
-#define MAKEMYDAY                      329
-#define WITNESSSTAND                   330
-#define VACATIONSPEECH                 331
-#define YIPPEE1                        332
-#define YOHOO1                         333
-#define YOHOO2                         334
-#define DOLPHINSND                     335
-#define TOUGHGALSND1                   336
-#define TOUGHGALSND2                   337
-#define TOUGHGALSND3                   338
-#define TOUGHGALSND4                   339
-#define TANK_ROAM                      340
-#define BOS4_ROAM                      341
-#define BOS4_RECOG                     342
-#define BOS4_ATTACK                    343
-#define BOS4_PAIN                      344
-#define BOS4_DYING                     345
-#define NEWBEAST_ATTACKMISS            346
-#define VOL4_2                         347
-#define COOKINGDEEPFRIER               348
-#define WHINING_DOG                    349
-#define DEAD_DOG                       350
-#define LIGHTNING_SLAP                 351
-#define THUNDER                        352
-#define HAPPYMOUSESND1                 353
-#define HAPPYMOUSESND2                 354
-#define HAPPYMOUSESND3                 355
-#define HAPPYMOUSESND4                 356
-#define ALARM                          357
-#define RAIN                           358
-#define DTAG_GREENRUN                  359
-#define DTAG_BROWNRUN                  360
-#define DTAG_GREENSCORE                361
-#define DTAG_BROWNSCORE                362
-#define INTRO4_1                       363
-#define INTRO4_2                       364
-#define INTRO4_3                       365
-#define INTRO4_4                       366
-#define INTRO4_5                       367
-#define INTRO4_6                       368
-#define SCREECH                        369
-#define BOSS4_DEADSPEECH               370
-#define BOSS4_FIRSTSEE                 371
-#define PARTY_SPEECH                   372
-#define POSTAL_SPEECH                  373
-#define TGSPEECH                       374
-#define DOGROOMSPEECH                  375
-#define SMACKED                        376
-#define MDEVSPEECH                     377
-#define AREA51SPEECH                   378
-#define JEEPSOUND                      379
-#define BIGDOORSLAM                    380
-#define BOS4_LAY                       381
-#define WAVESOUND                      382
-#define ILLBEBACK                      383
-#define VOL4ENDSND1                    384
-#define VOL4ENDSND2                    385
-#define EXPANDERHIT                    386
-#define SNAKESPEECH                    387
-#define EXPANDERSHOOT                  388
-#define GETBACKTOWORK                  389
-#define JIBBED_ACTOR14                 390
-#define JIBBED_ACTOR15                 391
-#define INTRO4_B                       392
-#define BIGBANG                        393
-#define HORNSND                        394
-#define BELLSND                        395
-#define GOAWAY                         396
-#define JOKE                           397
-// MAXIMUM NUMBER OF SOUNDS: 450 ( 0-449 )
-
+const int SECTOREFFECTOR = 1;
+const int ACTIVATOR = 2;
+const int TOUCHPLATE = 3;
+const int ACTIVATORLOCKED = 4;
+const int MUSICANDSFX = 5;
+const int LOCATORS = 6;
+const int CYCLER = 7;
+const int MASTERSWITCH = 8;
+const int RESPAWN = 9;
+const int GPSPEED = 10;
+const int ARROW = 20;
+const int FIRSTGUNSPRITE = 21;
+const int CHAINGUNSPRITE = 22;
+const int RPGSPRITE = 23;
+const int FREEZESPRITE = 24;
+const int SHRINKERSPRITE = 25;
+const int HEAVYHBOMB = 26;
+const int TRIPBOMBSPRITE = 27;
+const int SHOTGUNSPRITE = 28;
+const int DEVISTATORSPRITE = 29;
+const int HEALTHBOX = 30;
+const int AMMOBOX = 31;
+const int GROWSPRITEICON = 32;
+const int INVENTORYBOX = 33;
+const int FREEZEAMMO = 37;
+const int AMMO = 40;
+const int BATTERYAMMO = 41;
+const int DEVISTATORAMMO = 42;
+const int RPGAMMO = 44;
+const int GROWAMMO = 45;
+const int CRYSTALAMMO = 46;
+const int HBOMBAMMO = 47;
+const int AMMOLOTS = 48;
+const int SHOTGUNAMMO = 49;
+const int COLA = 51;
+const int SIXPAK = 52;
+const int FIRSTAID = 53;
+const int SHIELD = 54;
+const int STEROIDS = 55;
+const int AIRTANK = 56;
+const int JETPACK = 57;
+const int HEATSENSOR = 59;
+const int ACCESSCARD = 60;
+const int BOOTS = 61;
+const int MIRRORBROKE = 70;
+const int CLOUDYOCEAN = 78;
+const int CLOUDYSKIES = 79;
+const int MOONSKY1 = 80;
+const int MOONSKY2 = 81;
+const int MOONSKY3 = 82;
+const int MOONSKY4 = 83;
+const int BIGORBIT1 = 84;
+const int BIGORBIT2 = 85;
+const int BIGORBIT3 = 86;
+const int BIGORBIT4 = 87;
+const int BIGORBIT5 = 88;
+const int LA = 89;
+const int REDSKY1 = 98;
+const int REDSKY2 = 99;
+const int ATOMICHEALTH = 100;
+const int TECHLIGHT2 = 120;
+const int TECHLIGHTBUST2 = 121;
+const int TECHLIGHT4 = 122;
+const int TECHLIGHTBUST4 = 123;
+const int WALLLIGHT4 = 124;
+const int WALLLIGHTBUST4 = 125;
+const int ACCESSSWITCH = 130;
+const int SLOTDOOR = 132;
+const int LIGHTSWITCH = 134;
+const int SPACEDOORSWITCH = 136;
+const int SPACELIGHTSWITCH = 138;
+const int FRANKENSTINESWITCH = 140;
+const int NUKEBUTTON = 142;
+const int MULTISWITCH = 146;
+const int DOORTILE5 = 150;
+const int DOORTILE6 = 151;
+const int DOORTILE1 = 152;
+const int DOORTILE2 = 153;
+const int DOORTILE3 = 154;
+const int DOORTILE4 = 155;
+const int DOORTILE7 = 156;
+const int DOORTILE8 = 157;
+const int DOORTILE9 = 158;
+const int DOORTILE10 = 159;
+const int DOORSHOCK = 160;
+const int DIPSWITCH = 162;
+const int DIPSWITCH2 = 164;
+const int TECHSWITCH = 166;
+const int DIPSWITCH3 = 168;
+const int ACCESSSWITCH2 = 170;
+const int REFLECTWATERTILE = 180;
+const int FLOORSLIME = 200;
+const int BIGFORCE = 230;
+const int EPISODE = 247;
+const int MASKWALL9 = 255;
+const int W_LIGHT = 260;
+const int SCREENBREAK1 = 263;
+const int SCREENBREAK2 = 264;
+const int SCREENBREAK3 = 265;
+const int SCREENBREAK4 = 266;
+const int SCREENBREAK5 = 267;
+const int SCREENBREAK6 = 268;
+const int SCREENBREAK7 = 269;
+const int SCREENBREAK8 = 270;
+const int SCREENBREAK9 = 271;
+const int SCREENBREAK10 = 272;
+const int SCREENBREAK11 = 273;
+const int SCREENBREAK12 = 274;
+const int SCREENBREAK13 = 275;
+const int MASKWALL1 = 285;
+const int W_TECHWALL1 = 293;
+const int W_TECHWALL2 = 297;
+const int W_TECHWALL15 = 299;
+const int W_TECHWALL3 = 301;
+const int W_TECHWALL4 = 305;
+const int W_TECHWALL10 = 306;
+const int W_TECHWALL16 = 307;
+const int WATERTILE2 = 336;
+const int BPANNEL1 = 341;
+const int PANNEL1 = 342;
+const int PANNEL2 = 343;
+const int WATERTILE = 344;
+const int STATIC = 351;
+const int W_SCREENBREAK = 357;
+const int W_HITTECHWALL3 = 360;
+const int W_HITTECHWALL4 = 361;
+const int W_HITTECHWALL2 = 362;
+const int W_HITTECHWALL1 = 363;
+const int MASKWALL10 = 387;
+const int MASKWALL11 = 391;
+const int DOORTILE22 = 395;
+const int FANSPRITE = 407;
+const int FANSPRITEBROKE = 411;
+const int FANSHADOW = 412;
+const int FANSHADOWBROKE = 416;
+const int DOORTILE18 = 447;
+const int DOORTILE19 = 448;
+const int DOORTILE20 = 449;
+const int SATELLITE = 489;
+const int VIEWSCREEN2 = 499;
+const int VIEWSCREENBROKE = 501;
+const int VIEWSCREEN = 502;
+const int GLASS = 503;
+const int GLASS2 = 504;
+const int STAINGLASS1 = 510;
+const int MASKWALL5 = 514;
+const int SATELITE = 516;
+const int FUELPOD = 517;
+const int SLIMEPIPE = 538;
+const int CRACK1 = 546;
+const int CRACK2 = 547;
+const int CRACK3 = 548;
+const int CRACK4 = 549;
+const int FOOTPRINTS = 550;
+const int DOMELITE = 551;
+const int CAMERAPOLE = 554;
+const int CHAIR1 = 556;
+const int CHAIR2 = 557;
+const int BROKENCHAIR = 559;
+const int MIRROR = 560;
+const int WATERFOUNTAIN = 563;
+const int WATERFOUNTAINBROKE = 567;
+const int FEMMAG1 = 568;
+const int TOILET = 569;
+const int STALL = 571;
+const int STALLBROKE = 573;
+const int FEMMAG2 = 577;
+const int REACTOR2 = 578;
+const int REACTOR2BURNT = 579;
+const int REACTOR2SPARK = 580;
+const int GRATE1 = 595;
+const int BGRATE1 = 596;
+const int SOLARPANNEL = 602;
+const int NAKED1 = 603;
+const int ANTENNA = 607;
+const int MASKWALL12 = 609;
+const int TOILETBROKE = 615;
+const int PIPE2 = 616;
+const int PIPE1B = 617;
+const int PIPE3 = 618;
+const int PIPE1 = 619;
+const int CAMERA1 = 621;
+const int BRICK = 626;
+const int SPLINTERWOOD = 630;
+const int PIPE2B = 633;
+const int BOLT1 = 634;
+const int W_NUMBERS = 640;
+const int WATERDRIP = 660;
+const int WATERBUBBLE = 661;
+const int WATERBUBBLEMAKER = 662;
+const int W_FORCEFIELD = 663;
+const int VACUUM = 669;
+const int FOOTPRINTS2 = 672;
+const int FOOTPRINTS3 = 673;
+const int FOOTPRINTS4 = 674;
+const int EGG = 675;
+const int SCALE = 678;
+const int CHAIR3 = 680;
+const int CAMERALIGHT = 685;
+const int MOVIECAMERA = 686;
+const int IVUNIT = 689;
+const int POT1 = 694;
+const int POT2 = 695;
+const int POT3 = 697;
+const int PIPE3B = 700;
+const int WALLLIGHT3 = 701;
+const int WALLLIGHTBUST3 = 702;
+const int WALLLIGHT1 = 703;
+const int WALLLIGHTBUST1 = 704;
+const int WALLLIGHT2 = 705;
+const int WALLLIGHTBUST2 = 706;
+const int LIGHTSWITCH2 = 712;
+const int WAITTOBESEATED = 716;
+const int DOORTILE14 = 717;
+const int STATUE = 753;
+const int MIKE = 762;
+const int VASE = 765;
+const int SUSHIPLATE1 = 768;
+const int SUSHIPLATE2 = 769;
+const int SUSHIPLATE3 = 774;
+const int SUSHIPLATE4 = 779;
+const int DOORTILE16 = 781;
+const int SUSHIPLATE5 = 792;
+const int OJ = 806;
+const int MASKWALL13 = 830;
+const int HURTRAIL = 859;
+const int POWERSWITCH1 = 860;
+const int LOCKSWITCH1 = 862;
+const int POWERSWITCH2 = 864;
+const int ATM = 867;
+const int STATUEFLASH = 869;
+const int ATMBROKE = 888;
+const int BIGHOLE2 = 893;
+const int STRIPEBALL = 901;
+const int QUEBALL = 902;
+const int POCKET = 903;
+const int WOODENHORSE = 904;
+const int TREE1 = 908;
+const int TREE2 = 910;
+const int CACTUS = 911;
+const int MASKWALL2 = 913;
+const int MASKWALL3 = 914;
+const int MASKWALL4 = 915;
+const int FIREEXT = 916;
+const int TOILETWATER = 921;
+const int NEON1 = 925;
+const int NEON2 = 926;
+const int CACTUSBROKE = 939;
+const int BOUNCEMINE = 940;
+const int BROKEFIREHYDRENT = 950;
+const int BOX = 951;
+const int BULLETHOLE = 952;
+const int BOTTLE1 = 954;
+const int BOTTLE2 = 955;
+const int BOTTLE3 = 956;
+const int BOTTLE4 = 957;
+const int FEMPIC5 = 963;
+const int FEMPIC6 = 964;
+const int FEMPIC7 = 965;
+const int HYDROPLANT = 969;
+const int OCEANSPRITE1 = 971;
+const int OCEANSPRITE2 = 972;
+const int OCEANSPRITE3 = 973;
+const int OCEANSPRITE4 = 974;
+const int OCEANSPRITE5 = 975;
+const int GENERICPOLE = 977;
+const int CONE = 978;
+const int HANGLIGHT = 979;
+const int HYDRENT = 981;
+const int MASKWALL14 = 988;
+const int TIRE = 990;
+const int PIPE5 = 994;
+const int PIPE6 = 995;
+const int PIPE4 = 996;
+const int PIPE4B = 997;
+const int BROKEHYDROPLANT = 1003;
+const int PIPE5B = 1005;
+const int NEON3 = 1007;
+const int NEON4 = 1008;
+const int NEON5 = 1009;
+const int BOTTLE5 = 1012;
+const int BOTTLE6 = 1013;
+const int BOTTLE8 = 1014;
+const int SPOTLITE = 1020;
+const int HANGOOZ = 1022;
+const int MASKWALL15 = 1024;
+const int BOTTLE7 = 1025;
+const int HORSEONSIDE = 1026;
+const int GLASSPIECES = 1031;
+const int HORSELITE = 1034;
+const int DONUTS = 1045;
+const int NEON6 = 1046;
+const int MASKWALL6 = 1059;
+const int CLOCK = 1060;
+const int RUBBERCAN = 1062;
+const int BROKENCLOCK = 1067;
+const int PLUG = 1069;
+const int OOZFILTER = 1079;
+const int FLOORPLASMA = 1082;
+const int REACTOR = 1088;
+const int REACTORSPARK = 1092;
+const int REACTORBURNT = 1096;
+const int DOORTILE15 = 1102;
+const int HANDSWITCH = 1111;
+const int CIRCLEPANNEL = 1113;
+const int CIRCLEPANNELBROKE = 1114;
+const int PULLSWITCH = 1122;
+const int MASKWALL8 = 1124;
+const int BIGHOLE = 1141;
+const int ALIENSWITCH = 1142;
+const int DOORTILE21 = 1144;
+const int HANDPRINTSWITCH = 1155;
+const int BOTTLE10 = 1157;
+const int BOTTLE11 = 1158;
+const int BOTTLE12 = 1159;
+const int BOTTLE13 = 1160;
+const int BOTTLE14 = 1161;
+const int BOTTLE15 = 1162;
+const int BOTTLE16 = 1163;
+const int BOTTLE17 = 1164;
+const int BOTTLE18 = 1165;
+const int BOTTLE19 = 1166;
+const int DOORTILE17 = 1169;
+const int MASKWALL7 = 1174;
+const int JAILBARBREAK = 1175;
+const int DOORTILE11 = 1178;
+const int DOORTILE12 = 1179;
+const int VENDMACHINE = 1212;
+const int VENDMACHINEBROKE = 1214;
+const int COLAMACHINE = 1215;
+const int COLAMACHINEBROKE = 1217;
+const int CRANEPOLE = 1221;
+const int CRANE = 1222;
+const int BARBROKE = 1225;
+const int BLOODPOOL = 1226;
+const int NUKEBARREL = 1227;
+const int NUKEBARRELDENTED = 1228;
+const int NUKEBARRELLEAKED = 1229;
+const int CANWITHSOMETHING = 1232;
+const int MONEY = 1233;
+const int BANNER = 1236;
+const int EXPLODINGBARREL = 1238;
+const int EXPLODINGBARREL2 = 1239;
+const int FIREBARREL = 1240;
+const int SEENINE = 1247;
+const int SEENINEDEAD = 1248;
+const int STEAM = 1250;
+const int CEILINGSTEAM = 1255;
+const int PIPE6B = 1260;
+const int TRANSPORTERBEAM = 1261;
+const int RAT = 1267;
+const int TRASH = 1272;
+const int FEMPIC1 = 1280;
+const int FEMPIC2 = 1289;
+const int BLANKSCREEN = 1293;
+const int PODFEM1 = 1294;
+const int FEMPIC3 = 1298;
+const int FEMPIC4 = 1306;
+const int FEM1 = 1312;
+const int FEM2 = 1317;
+const int FEM3 = 1321;
+const int FEM5 = 1323;
+const int BLOODYPOLE = 1324;
+const int FEM4 = 1325;
+const int FEM6 = 1334;
+const int FEM6PAD = 1335;
+const int FEM8 = 1336;
+const int HELECOPT = 1346;
+const int FETUSJIB = 1347;
+const int HOLODUKE = 1348;
+const int SPACEMARINE = 1353;
+const int INDY = 1355;
+const int FETUS = 1358;
+const int FETUSBROKE = 1359;
+const int MONK = 1352;
+const int LUKE = 1354;
+const int COOLEXPLOSION1 = 1360;
+const int WATERSPLASH2 = 1380;
+const int FIREVASE = 1390;
+const int SCRATCH = 1393;
+const int FEM7 = 1395;
+const int APLAYERTOP = 1400;
+const int APLAYER = 1405;
+const int PLAYERONWATER = 1420;
+const int DUKELYINGDEAD = 1518;
+const int DUKETORSO = 1520;
+const int DUKEGUN = 1528;
+const int DUKELEG = 1536;
+const int SHARK = 1550;
+const int BLOOD = 1620;
+const int FIRELASER = 1625;
+const int TRANSPORTERSTAR = 1630;
+const int SPIT = 1636;
+const int LOOGIE = 1637;
+const int FIST = 1640;
+const int FREEZEBLAST = 1641;
+const int DEVISTATORBLAST = 1642;
+const int SHRINKSPARK = 1646;
+const int TONGUE = 1647;
+const int MORTER = 1650;
+const int SHRINKEREXPLOSION = 1656;
+const int RADIUSEXPLOSION = 1670;
+const int FORCERIPPLE = 1671;
+const int LIZTROOP = 1680;
+const int LIZTROOPRUNNING = 1681;
+const int LIZTROOPSTAYPUT = 1682;
+const int LIZTOP = 1705;
+const int LIZTROOPSHOOT = 1715;
+const int LIZTROOPJETPACK = 1725;
+const int LIZTROOPDSPRITE = 1734;
+const int LIZTROOPONTOILET = 1741;
+const int LIZTROOPJUSTSIT = 1742;
+const int LIZTROOPDUCKING = 1744;
+const int HEADJIB1 = 1768;
+const int ARMJIB1 = 1772;
+const int LEGJIB1 = 1776;
+const int CANNONBALL = 1817;
+const int OCTABRAIN = 1820;
+const int OCTABRAINSTAYPUT = 1821;
+const int OCTATOP = 1845;
+const int OCTADEADSPRITE = 1855;
+const int INNERJAW = 1860;
+const int DRONE = 1880;
+const int EXPLOSION2 = 1890;
+const int COMMANDER = 1920;
+const int COMMANDERSTAYPUT = 1921;
+const int RECON = 1960;
+const int TANK = 1975;
+const int PIGCOP = 2000;
+const int PIGCOPSTAYPUT = 2001;
+const int PIGCOPDIVE = 2045;
+const int PIGCOPDEADSPRITE = 2060;
+const int PIGTOP = 2061;
+const int LIZMAN = 2120;
+const int LIZMANSTAYPUT = 2121;
+const int LIZMANSPITTING = 2150;
+const int LIZMANFEEDING = 2160;
+const int LIZMANJUMP = 2165;
+const int LIZMANDEADSPRITE = 2185;
+const int FECES = 2200;
+const int LIZMANHEAD1 = 2201;
+const int LIZMANARM1 = 2205;
+const int LIZMANLEG1 = 2209;
+const int EXPLOSION2BOT = 2219;
+const int USERWEAPON = 2235;
+const int HEADERBAR = 2242;
+const int JIBS1 = 2245;
+const int JIBS2 = 2250;
+const int JIBS3 = 2255;
+const int JIBS4 = 2260;
+const int JIBS5 = 2265;
+const int BURNING = 2270;
+const int FIRE = 2271;
+const int JIBS6 = 2286;
+const int BLOODSPLAT1 = 2296;
+const int BLOODSPLAT3 = 2297;
+const int BLOODSPLAT2 = 2298;
+const int BLOODSPLAT4 = 2299;
+const int OOZ = 2300;
+const int OOZ2 = 2309;
+const int WALLBLOOD1 = 2301;
+const int WALLBLOOD2 = 2302;
+const int WALLBLOOD3 = 2303;
+const int WALLBLOOD4 = 2304;
+const int WALLBLOOD5 = 2305;
+const int WALLBLOOD6 = 2306;
+const int WALLBLOOD7 = 2307;
+const int WALLBLOOD8 = 2308;
+const int BURNING2 = 2310;
+const int FIRE2 = 2311;
+const int CRACKKNUCKLES = 2324;
+const int SMALLSMOKE = 2329;
+const int SMALLSMOKEMAKER = 2330;
+const int FLOORFLAME = 2333;
+const int ROTATEGUN = 2360;
+const int GREENSLIME = 2370;
+const int WATERDRIPSPLASH = 2380;
+const int SCRAP6 = 2390;
+const int SCRAP1 = 2400;
+const int SCRAP2 = 2404;
+const int SCRAP3 = 2408;
+const int SCRAP4 = 2412;
+const int SCRAP5 = 2416;
+const int ORGANTIC = 2420;
+const int BETAVERSION = 2440;
+const int PLAYERISHERE = 2442;
+const int PLAYERWASHERE = 2443;
+const int SELECTDIR = 2444;
+const int F1HELP = 2445;
+const int NOTCHON = 2446;
+const int NOTCHOFF = 2447;
+const int GROWSPARK = 2448;
+const int DUKEICON = 2452;
+const int BADGUYICON = 2453;
+const int FOODICON = 2454;
+const int GETICON = 2455;
+const int MENUSCREEN = 2456;
+const int MENUBAR = 2457;
+const int KILLSICON = 2458;
+const int FIRSTAID_ICON = 2460;
+const int HEAT_ICON = 2461;
+const int BOTTOMSTATUSBAR = 2462;
+const int BOOT_ICON = 2463;
+const int FRAGBAR = 2465;
+const int JETPACK_ICON = 2467;
+const int AIRTANK_ICON = 2468;
+const int STEROIDS_ICON = 2469;
+const int HOLODUKE_ICON = 2470;
+const int ACCESS_ICON = 2471;
+const int DIGITALNUM = 2472;
+const int DUKECAR = 2491;
+const int CAMCORNER = 2482;
+const int CAMLIGHT = 2484;
+const int LOGO = 2485;
+const int TITLE = 2486;
+const int NUKEWARNINGICON = 2487;
+const int MOUSECURSOR = 2488;
+const int SLIDEBAR = 2489;
+const int DREALMS = 2492;
+const int BETASCREEN = 2493;
+const int WINDOWBORDER1 = 2494;
+const int TEXTBOX = 2495;
+const int WINDOWBORDER2 = 2496;
+const int DUKENUKEM = 2497;
+const int THREEDEE = 2498;
+const int INGAMEDUKETHREEDEE = 2499;
+const int TENSCREEN = 2500;
+const int PLUTOPAKSPRITE = 2501;
+const int DEVISTATOR = 2510;
+const int KNEE = 2521;
+const int CROSSHAIR = 2523;
+const int FIRSTGUN = 2524;
+const int FIRSTGUNRELOAD = 2528;
+const int FALLINGCLIP = 2530;
+const int CLIPINHAND = 2531;
+const int HAND = 2532;
+const int SHELL = 2533;
+const int SHOTGUNSHELL = 2535;
+const int CHAINGUN = 2536;
+const int RPGGUN = 2544;
+const int RPGMUZZLEFLASH = 2545;
+const int FREEZE = 2548;
+const int CATLITE = 2552;
+const int SHRINKER = 2556;
+const int HANDHOLDINGLASER = 2563;
+const int TRIPBOMB = 2566;
+const int LASERLINE = 2567;
+const int HANDHOLDINGACCESS = 2568;
+const int HANDREMOTE = 2570;
+const int HANDTHROW = 2573;
+const int TIP = 2576;
+const int GLAIR = 2578;
+const int SCUBAMASK = 2581;
+const int SPACEMASK = 2584;
+const int FORCESPHERE = 2590;
+const int SHOTSPARK1 = 2595;
+const int RPG = 2605;
+const int LASERSITE = 2612;
+const int SHOTGUN = 2613;
+const int BOSS1 = 2630;
+const int BOSS1STAYPUT = 2631;
+const int BOSS1SHOOT = 2660;
+const int BOSS1LOB = 2670;
+const int BOSSTOP = 2696;
+const int BOSS2 = 2710;
+const int BOSS3 = 2760;
+const int SPINNINGNUKEICON = 2813;
+const int BIGFNTCURSOR = 2820;
+const int SMALLFNTCURSOR = 2821;
+const int STARTALPHANUM = 2822;
+const int ENDALPHANUM = 2915;
+const int BIGALPHANUM = 2940;
+const int BIGPERIOD = 3002;
+const int BIGCOMMA = 3003;
+const int BIGX = 3004;
+const int BIGQ = 3005;
+const int BIGSEMI = 3006;
+const int BIGCOLIN = 3007;
+const int THREEBYFIVE = 3010;
+const int BIGAPPOS = 3022;
+const int BLANK = 3026;
+const int MINIFONT = 3072;
+const int BUTTON1 = 3164;
+const int GLASS3 = 3187;
+const int RESPAWNMARKERRED = 3190;
+const int RESPAWNMARKERYELLOW = 3200;
+const int RESPAWNMARKERGREEN = 3210;
+const int BONUSSCREEN = 3240;
+const int VIEWBORDER = 3250;
+const int VICTORY1 = 3260;
+const int ORDERING = 3270;
+const int TEXTSTORY = 3280;
+const int LOADSCREEN = 3281;
+const int BORNTOBEWILDSCREEN = 3370;
+const int BLIMP = 3400;
+const int FEM9 = 3450;
+const int FOOTPRINT = 3701;
+const int POOP = 4094;
+const int FRAMEEFFECT1 = 4095;
+const int PANNEL3 = 4099;
+const int SCREENBREAK14 = 4120;
+const int SCREENBREAK15 = 4123;
+const int SCREENBREAK19 = 4125;
+const int SCREENBREAK16 = 4127;
+const int SCREENBREAK17 = 4128;
+const int SCREENBREAK18 = 4129;
+const int W_TECHWALL11 = 4130;
+const int W_TECHWALL12 = 4131;
+const int W_TECHWALL13 = 4132;
+const int W_TECHWALL14 = 4133;
+const int W_TECHWALL5 = 4134;
+const int W_TECHWALL6 = 4136;
+const int W_TECHWALL7 = 4138;
+const int W_TECHWALL8 = 4140;
+const int W_TECHWALL9 = 4142;
+const int BPANNEL3 = 4100;
+const int W_HITTECHWALL16 = 4144;
+const int W_HITTECHWALL10 = 4145;
+const int W_HITTECHWALL15 = 4147;
+const int W_MILKSHELF = 4181;
+const int W_MILKSHELFBROKE = 4203;
+const int PURPLELAVA = 4240;
+const int LAVABUBBLE = 4340;
+const int DUKECUTOUT = 4352;
+const int TARGET = 4359;
+const int GUNPOWDERBARREL = 4360;
+const int DUCK = 4361;
+const int HATRACK = 4367;
+const int DESKLAMP = 4370;
+const int COFFEEMACHINE = 4372;
+const int CUPS = 4373;
+const int GAVALS = 4374;
+const int GAVALS2 = 4375;
+const int POLICELIGHTPOLE = 4377;
+const int FLOORBASKET = 4388;
+const int PUKE = 4389;
+const int DOORTILE23 = 4391;
+const int TOPSECRET = 4396;
+const int SPEAKER = 4397;
+const int TEDDYBEAR = 4400;
+const int ROBOTDOG = 4402;
+const int ROBOTPIRATE = 4404;
+const int ROBOTMOUSE = 4407;
+const int MAIL = 4410;
+const int MAILBAG = 4413;
+const int HOTMEAT = 4427;
+const int COFFEEMUG = 4438;
+const int DONUTS2 = 4440;
+const int TRIPODCAMERA = 4444;
+const int METER = 4453;
+const int DESKPHONE = 4454;
+const int GUMBALLMACHINE = 4458;
+const int GUMBALLMACHINEBROKE = 4459;
+const int PAPER = 4460;
+const int MACE = 4464;
+const int GENERICPOLE2 = 4465;
+const int XXXSTACY = 4470;
+const int WETFLOOR = 4495;
+const int BROOM = 4496;
+const int MOP = 4497;
+const int LETTER = 4502;
+const int PIRATE1A = 4510;
+const int PIRATE4A = 4511;
+const int PIRATE2A = 4512;
+const int PIRATE5A = 4513;
+const int PIRATE3A = 4514;
+const int PIRATE6A = 4515;
+const int PIRATEHALF = 4516;
+const int CHESTOFGOLD = 4520;
+const int SIDEBOLT1 = 4525;
+const int FOODOBJECT1 = 4530;
+const int FOODOBJECT2 = 4531;
+const int FOODOBJECT3 = 4532;
+const int FOODOBJECT4 = 4533;
+const int FOODOBJECT5 = 4534;
+const int FOODOBJECT6 = 4535;
+const int FOODOBJECT7 = 4536;
+const int FOODOBJECT8 = 4537;
+const int FOODOBJECT9 = 4538;
+const int FOODOBJECT10 = 4539;
+const int FOODOBJECT11 = 4540;
+const int FOODOBJECT12 = 4541;
+const int FOODOBJECT13 = 4542;
+const int FOODOBJECT14 = 4543;
+const int FOODOBJECT15 = 4544;
+const int FOODOBJECT16 = 4545;
+const int FOODOBJECT17 = 4546;
+const int FOODOBJECT18 = 4547;
+const int FOODOBJECT19 = 4548;
+const int FOODOBJECT20 = 4549;
+const int HEADLAMP = 4550;
+const int TAMPON = 4557;
+const int SKINNEDCHICKEN = 4554;
+const int FEATHEREDCHICKEN = 4555;
+const int ROBOTDOG2 = 4560;
+const int JOLLYMEAL = 4569;
+const int DUKEBURGER = 4570;
+const int SHOPPINGCART = 4576;
+const int CANWITHSOMETHING2 = 4580;
+const int CANWITHSOMETHING3 = 4581;
+const int CANWITHSOMETHING4 = 4582;
+const int SNAKEP = 4590;
+const int DOLPHIN1 = 4591;
+const int DOLPHIN2 = 4592;
+const int NEWBEAST = 4610;
+const int NEWBEASTSTAYPUT = 4611;
+const int NEWBEASTJUMP = 4690;
+const int NEWBEASTHANG = 4670;
+const int NEWBEASTHANGDEAD = 4671;
+const int BOSS4 = 4740;
+const int BOSS4STAYPUT = 4741;
+const int FEM10 = 4864;
+const int TOUGHGAL = 4866;
+const int MAN = 4871;
+const int MAN2 = 4872;
+const int WOMAN = 4874;
+const int PLEASEWAIT = 4887;
+const int NATURALLIGHTNING = 4890;
+const int WEATHERWARN = 4893;
+const int DUKETAG = 4900;
+const int SIGN1 = 4909;
+const int SIGN2 = 4912;
+const int JURYGUY = 4943;
+const int RESERVEDSLOT1 = 6132;
+const int RESERVEDSLOT2 = 6133;
+const int RESERVEDSLOT3 = 6134;
+const int RESERVEDSLOT4 = 6135;
+const int RESERVEDSLOT5 = 6136;
+const int RESERVEDSLOT6 = 6132;
+const int RESERVEDSLOT7 = 6133;
+const int RESERVEDSLOT8 = 6134;
+const int RESERVEDSLOT9 = 6135;
+const int RESERVEDSLOT10 = 6136;
+const int RESERVEDSLOT11 = 6137;
+const int RESERVEDSLOT12 = 6138;
+const int RESERVEDSLOT13 = 6139;
+const int RESERVEDSLOT14 = 6140;
+const int RESERVEDSLOT15 = 6141;
+const int RESERVEDSLOT16 = 6142;
+const int RESERVEDSLOT17 = 6143;
+const int KNEE_WEAPON = 0;
+const int PISTOL_WEAPON = 1;
+const int SHOTGUN_WEAPON = 2;
+const int CHAINGUN_WEAPON = 3;
+const int RPG_WEAPON = 4;
+const int HANDBOMB_WEAPON = 5;
+const int SHRINKER_WEAPON = 6;
+const int DEVISTATOR_WEAPON = 7;
+const int TRIPBOMB_WEAPON = 8;
+const int FREEZE_WEAPON = 9;
+const int HANDREMOTE_WEAPON = 10;
+const int GROW_WEAPON = 11;
+const int faceplayer = 1;
+const int geth = 2;
+const int getv = 4;
+const int randomangle = 8;
+const int faceplayerslow = 16;
+const int spin = 32;
+const int faceplayersmart = 64;
+const int fleeenemy = 128;
+const int jumptoplayer = 257;
+const int seekplayer = 512;
+const int furthestdir = 1024;
+const int dodgebullet = 4096;
+const int NO = 0;
+const int YES = 1;
+const int notenemy = 0;
+const int enemy = 1;
+const int enemystayput = 2;
+const int pstanding = 1;
+const int pwalking = 2;
+const int prunning = 4;
+const int pducking = 8;
+const int pfalling = 16;
+const int pjumping = 32;
+const int phigher = 64;
+const int pwalkingback = 128;
+const int prunningback = 256;
+const int pkicking = 512;
+const int pshrunk = 1024;
+const int pjetpack = 2048;
+const int ponsteroids = 4096;
+const int ponground = 8192;
+const int palive = 16384;
+const int pdead = 32768;
+const int pfacing = 65536;
+const int GET_STEROIDS = 0;
+const int GET_SHIELD = 1;
+const int GET_SCUBA = 2;
+const int GET_HOLODUKE = 3;
+const int GET_JETPACK = 4;
+const int GET_ACCESS = 6;
+const int GET_HEATS = 7;
+const int GET_FIRSTAID = 9;
+const int GET_BOOTS = 10;
+const int KICK_HIT = 0;
+const int PISTOL_RICOCHET = 1;
+const int PISTOL_BODYHIT = 2;
+const int PISTOL_FIRE = 3;
+const int EJECT_CLIP = 4;
+const int INSERT_CLIP = 5;
+const int CHAINGUN_FIRE = 6;
+const int RPG_SHOOT = 7;
+const int POOLBALLHIT = 8;
+const int RPG_EXPLODE = 9;
+const int CAT_FIRE = 10;
+const int SHRINKER_FIRE = 11;
+const int ACTOR_SHRINKING = 12;
+const int PIPEBOMB_BOUNCE = 13;
+const int PIPEBOMB_EXPLODE = 14;
+const int LASERTRIP_ONWALL = 15;
+const int LASERTRIP_ARMING = 16;
+const int LASERTRIP_EXPLODE = 17;
+const int VENT_BUST = 18;
+const int GLASS_BREAKING = 19;
+const int GLASS_HEAVYBREAK = 20;
+const int SHORT_CIRCUIT = 21;
+const int ITEM_SPLASH = 22;
+const int DUKE_BREATHING = 23;
+const int DUKE_EXHALING = 24;
+const int DUKE_GASP = 25;
+const int SLIM_RECOG = 26;
+const int DUKE_URINATE = 28;
+const int ENDSEQVOL3SND2 = 29;
+const int ENDSEQVOL3SND3 = 30;
+const int DUKE_PASSWIND = 32;
+const int DUKE_CRACK = 33;
+const int SLIM_ATTACK = 34;
+const int SOMETHINGHITFORCE = 35;
+const int DUKE_DRINKING = 36;
+const int DUKE_KILLED1 = 37;
+const int DUKE_GRUNT = 38;
+const int DUKE_HARTBEAT = 39;
+const int DUKE_ONWATER = 40;
+const int DUKE_DEAD = 41;
+const int DUKE_LAND = 42;
+const int DUKE_WALKINDUCTS = 43;
+const int DUKE_GLAD = 44;
+const int DUKE_YES = 45;
+const int DUKE_HEHE = 46;
+const int DUKE_SHUCKS = 47;
+const int DUKE_UNDERWATER = 48;
+const int DUKE_JETPACK_ON = 49;
+const int DUKE_JETPACK_IDLE = 50;
+const int DUKE_JETPACK_OFF = 51;
+const int LIZTROOP_GROWL = 52;
+const int LIZTROOP_TALK1 = 53;
+const int LIZTROOP_TALK2 = 54;
+const int LIZTROOP_TALK3 = 55;
+const int DUKETALKTOBOSS = 56;
+const int LIZCAPT_GROWL = 57;
+const int LIZCAPT_TALK1 = 58;
+const int LIZCAPT_TALK2 = 59;
+const int LIZCAPT_TALK3 = 60;
+const int LIZARD_BEG = 61;
+const int LIZARD_PAIN = 62;
+const int LIZARD_DEATH = 63;
+const int LIZARD_SPIT = 64;
+const int DRONE1_HISSRATTLE = 65;
+const int DRONE1_HISSSCREECH = 66;
+const int DUKE_TIP2 = 67;
+const int FLESH_BURNING = 68;
+const int SQUISHED = 69;
+const int TELEPORTER = 70;
+const int ELEVATOR_ON = 71;
+const int DUKE_KILLED3 = 72;
+const int ELEVATOR_OFF = 73;
+const int DOOR_OPERATE1 = 74;
+const int SUBWAY = 75;
+const int SWITCH_ON = 76;
+const int FAN = 77;
+const int DUKE_GETWEAPON3 = 78;
+const int FLUSH_TOILET = 79;
+const int HOVER_CRAFT = 80;
+const int EARTHQUAKE = 81;
+const int INTRUDER_ALERT = 82;
+const int END_OF_LEVEL_WARN = 83;
+const int ENGINE_OPERATING = 84;
+const int REACTOR_ON = 85;
+const int COMPUTER_AMBIENCE = 86;
+const int GEARS_GRINDING = 87;
+const int BUBBLE_AMBIENCE = 88;
+const int MACHINE_AMBIENCE = 89;
+const int SEWER_AMBIENCE = 90;
+const int WIND_AMBIENCE = 91;
+const int SOMETHING_DRIPPING = 92;
+const int STEAM_HISSING = 93;
+const int THEATER_BREATH = 94;
+const int BAR_MUSIC = 95;
+const int BOS1_ROAM = 96;
+const int BOS1_RECOG = 97;
+const int BOS1_ATTACK1 = 98;
+const int BOS1_PAIN = 99;
+const int BOS1_DYING = 100;
+const int BOS2_ROAM = 101;
+const int BOS2_RECOG = 102;
+const int BOS2_ATTACK = 103;
+const int BOS2_PAIN = 104;
+const int BOS2_DYING = 105;
+const int GETATOMICHEALTH = 106;
+const int DUKE_GETWEAPON2 = 107;
+const int BOS3_DYING = 108;
+const int SHOTGUN_FIRE = 109;
+const int PRED_ROAM = 110;
+const int PRED_RECOG = 111;
+const int PRED_ATTACK = 112;
+const int PRED_PAIN = 113;
+const int PRED_DYING = 114;
+const int CAPT_ROAM = 115;
+const int CAPT_ATTACK = 116;
+const int CAPT_RECOG = 117;
+const int CAPT_PAIN = 118;
+const int CAPT_DYING = 119;
+const int PIG_ROAM = 120;
+const int PIG_RECOG = 121;
+const int PIG_ATTACK = 122;
+const int PIG_PAIN = 123;
+const int PIG_DYING = 124;
+const int RECO_ROAM = 125;
+const int RECO_RECOG = 126;
+const int RECO_ATTACK = 127;
+const int RECO_PAIN = 128;
+const int RECO_DYING = 129;
+const int DRON_ROAM = 130;
+const int DRON_RECOG = 131;
+const int DRON_ATTACK1 = 132;
+const int DRON_PAIN = 133;
+const int DRON_DYING = 134;
+const int COMM_ROAM = 135;
+const int COMM_RECOG = 136;
+const int COMM_ATTACK = 137;
+const int COMM_PAIN = 138;
+const int COMM_DYING = 139;
+const int OCTA_ROAM = 140;
+const int OCTA_RECOG = 141;
+const int OCTA_ATTACK1 = 142;
+const int OCTA_PAIN = 143;
+const int OCTA_DYING = 144;
+const int TURR_ROAM = 145;
+const int TURR_RECOG = 146;
+const int TURR_ATTACK = 147;
+const int DUMPSTER_MOVE = 148;
+const int SLIM_DYING = 149;
+const int BOS3_ROAM = 150;
+const int BOS3_RECOG = 151;
+const int BOS3_ATTACK1 = 152;
+const int BOS3_PAIN = 153;
+const int BOS1_ATTACK2 = 154;
+const int COMM_SPIN = 155;
+const int BOS1_WALK = 156;
+const int DRON_ATTACK2 = 157;
+const int THUD = 158;
+const int OCTA_ATTACK2 = 159;
+const int WIERDSHOT_FLY = 160;
+const int TURR_PAIN = 161;
+const int TURR_DYING = 162;
+const int SLIM_ROAM = 163;
+const int LADY_SCREAM = 164;
+const int DOOR_OPERATE2 = 165;
+const int DOOR_OPERATE3 = 166;
+const int DOOR_OPERATE4 = 167;
+const int BORNTOBEWILDSND = 168;
+const int SHOTGUN_COCK = 169;
+const int GENERIC_AMBIENCE1 = 170;
+const int GENERIC_AMBIENCE2 = 171;
+const int GENERIC_AMBIENCE3 = 172;
+const int GENERIC_AMBIENCE4 = 173;
+const int GENERIC_AMBIENCE5 = 174;
+const int GENERIC_AMBIENCE6 = 175;
+const int BOS3_ATTACK2 = 176;
+const int GENERIC_AMBIENCE17 = 177;
+const int GENERIC_AMBIENCE18 = 178;
+const int GENERIC_AMBIENCE19 = 179;
+const int GENERIC_AMBIENCE20 = 180;
+const int GENERIC_AMBIENCE21 = 181;
+const int GENERIC_AMBIENCE22 = 182;
+const int SECRETLEVELSND = 183;
+const int GENERIC_AMBIENCE8 = 184;
+const int GENERIC_AMBIENCE9 = 185;
+const int GENERIC_AMBIENCE10 = 186;
+const int GENERIC_AMBIENCE11 = 187;
+const int GENERIC_AMBIENCE12 = 188;
+const int GENERIC_AMBIENCE13 = 189;
+const int GENERIC_AMBIENCE14 = 190;
+const int GENERIC_AMBIENCE15 = 192;
+const int GENERIC_AMBIENCE16 = 193;
+const int FIRE_CRACKLE = 194;
+const int BONUS_SPEECH1 = 195;
+const int BONUS_SPEECH2 = 196;
+const int BONUS_SPEECH3 = 197;
+const int PIG_CAPTURE_DUKE = 198;
+const int BONUS_SPEECH4 = 199;
+const int DUKE_LAND_HURT = 200;
+const int DUKE_HIT_STRIPPER1 = 201;
+const int DUKE_TIP1 = 202;
+const int DUKE_KILLED2 = 203;
+const int PRED_ROAM2 = 204;
+const int PIG_ROAM2 = 205;
+const int DUKE_GETWEAPON1 = 206;
+const int DUKE_SEARCH2 = 207;
+const int DUKE_CRACK2 = 208;
+const int DUKE_SEARCH = 209;
+const int DUKE_GET = 210;
+const int DUKE_LONGTERM_PAIN = 211;
+const int MONITOR_ACTIVE = 212;
+const int NITEVISION_ONOFF = 213;
+const int DUKE_HIT_STRIPPER2 = 214;
+const int DUKE_CRACK_FIRST = 215;
+const int DUKE_USEMEDKIT = 216;
+const int DUKE_TAKEPILLS = 217;
+const int DUKE_PISSRELIEF = 218;
+const int SELECT_WEAPON = 219;
+const int WATER_GURGLE = 220;
+const int DUKE_GETWEAPON4 = 221;
+const int JIBBED_ACTOR1 = 222;
+const int JIBBED_ACTOR2 = 223;
+const int JIBBED_ACTOR3 = 224;
+const int JIBBED_ACTOR4 = 225;
+const int JIBBED_ACTOR5 = 226;
+const int JIBBED_ACTOR6 = 227;
+const int JIBBED_ACTOR7 = 228;
+const int DUKE_GOTHEALTHATLOW = 229;
+const int BOSSTALKTODUKE = 230;
+const int WAR_AMBIENCE1 = 231;
+const int WAR_AMBIENCE2 = 232;
+const int WAR_AMBIENCE3 = 233;
+const int WAR_AMBIENCE4 = 234;
+const int WAR_AMBIENCE5 = 235;
+const int WAR_AMBIENCE6 = 236;
+const int WAR_AMBIENCE7 = 237;
+const int WAR_AMBIENCE8 = 238;
+const int WAR_AMBIENCE9 = 239;
+const int WAR_AMBIENCE10 = 240;
+const int ALIEN_TALK1 = 241;
+const int ALIEN_TALK2 = 242;
+const int EXITMENUSOUND = 243;
+const int FLY_BY = 244;
+const int DUKE_SCREAM = 245;
+const int SHRINKER_HIT = 246;
+const int RATTY = 247;
+const int INTO_MENU = 248;
+const int BONUSMUSIC = 249;
+const int DUKE_BOOBY = 250;
+const int DUKE_TALKTOBOSSFALL = 251;
+const int DUKE_LOOKINTOMIRROR = 252;
+const int PIG_ROAM3 = 253;
+const int KILLME = 254;
+const int DRON_JETSND = 255;
+const int SPACE_DOOR1 = 256;
+const int SPACE_DOOR2 = 257;
+const int SPACE_DOOR3 = 258;
+const int SPACE_DOOR4 = 259;
+const int SPACE_DOOR5 = 260;
+const int ALIEN_ELEVATOR1 = 261;
+const int VAULT_DOOR = 262;
+const int JIBBED_ACTOR13 = 263;
+const int DUKE_GETWEAPON6 = 264;
+const int JIBBED_ACTOR8 = 265;
+const int JIBBED_ACTOR9 = 266;
+const int JIBBED_ACTOR10 = 267;
+const int JIBBED_ACTOR11 = 268;
+const int JIBBED_ACTOR12 = 269;
+const int DUKE_KILLED4 = 270;
+const int DUKE_KILLED5 = 271;
+const int ALIEN_SWITCH1 = 272;
+const int DUKE_STEPONFECES = 273;
+const int DUKE_LONGTERM_PAIN2 = 274;
+const int DUKE_LONGTERM_PAIN3 = 275;
+const int DUKE_LONGTERM_PAIN4 = 276;
+const int COMPANB2 = 277;
+const int KTIT = 278;
+const int HELICOP_IDLE = 279;
+const int STEPNIT = 280;
+const int SPACE_AMBIENCE1 = 281;
+const int SPACE_AMBIENCE2 = 282;
+const int SLIM_HATCH = 283;
+const int RIPHEADNECK = 284;
+const int FOUNDJONES = 285;
+const int ALIEN_DOOR1 = 286;
+const int ALIEN_DOOR2 = 287;
+const int ENDSEQVOL3SND4 = 288;
+const int ENDSEQVOL3SND5 = 289;
+const int ENDSEQVOL3SND6 = 290;
+const int ENDSEQVOL3SND7 = 291;
+const int ENDSEQVOL3SND8 = 292;
+const int ENDSEQVOL3SND9 = 293;
+const int WHIPYOURASS = 294;
+const int ENDSEQVOL2SND1 = 295;
+const int ENDSEQVOL2SND2 = 296;
+const int ENDSEQVOL2SND3 = 297;
+const int ENDSEQVOL2SND4 = 298;
+const int ENDSEQVOL2SND5 = 299;
+const int ENDSEQVOL2SND6 = 300;
+const int ENDSEQVOL2SND7 = 301;
+const int GENERIC_AMBIENCE23 = 302;
+const int SOMETHINGFROZE = 303;
+const int DUKE_LONGTERM_PAIN5 = 304;
+const int DUKE_LONGTERM_PAIN6 = 305;
+const int DUKE_LONGTERM_PAIN7 = 306;
+const int DUKE_LONGTERM_PAIN8 = 307;
+const int WIND_REPEAT = 308;
+const int MYENEMY_ROAM = 309;
+const int MYENEMY_HURT = 310;
+const int MYENEMY_DEAD = 311;
+const int MYENEMY_SHOOT = 312;
+const int STORE_MUSIC = 313;
+const int STORE_MUSIC_BROKE = 314;
+const int ACTOR_GROWING = 315;
+const int NEWBEAST_ROAM = 316;
+const int NEWBEAST_RECOG = 317;
+const int NEWBEAST_ATTACK = 318;
+const int NEWBEAST_PAIN = 319;
+const int NEWBEAST_DYING = 320;
+const int NEWBEAST_SPIT = 321;
+const int VOL4_1 = 322;
+const int SUPERMARKET = 323;
+const int MOUSEANNOY = 324;
+const int BOOKEM = 325;
+const int SUPERMARKETCRY = 326;
+const int DESTRUCT = 327;
+const int EATFOOD = 328;
+const int MAKEMYDAY = 329;
+const int WITNESSSTAND = 330;
+const int VACATIONSPEECH = 331;
+const int YIPPEE1 = 332;
+const int YOHOO1 = 333;
+const int YOHOO2 = 334;
+const int DOLPHINSND = 335;
+const int TOUGHGALSND1 = 336;
+const int TOUGHGALSND2 = 337;
+const int TOUGHGALSND3 = 338;
+const int TOUGHGALSND4 = 339;
+const int TANK_ROAM = 340;
+const int BOS4_ROAM = 341;
+const int BOS4_RECOG = 342;
+const int BOS4_ATTACK = 343;
+const int BOS4_PAIN = 344;
+const int BOS4_DYING = 345;
+const int NEWBEAST_ATTACKMISS = 346;
+const int VOL4_2 = 347;
+const int COOKINGDEEPFRIER = 348;
+const int WHINING_DOG = 349;
+const int DEAD_DOG = 350;
+const int LIGHTNING_SLAP = 351;
+const int THUNDER = 352;
+const int HAPPYMOUSESND1 = 353;
+const int HAPPYMOUSESND2 = 354;
+const int HAPPYMOUSESND3 = 355;
+const int HAPPYMOUSESND4 = 356;
+const int ALARM = 357;
+const int RAIN = 358;
+const int DTAG_GREENRUN = 359;
+const int DTAG_BROWNRUN = 360;
+const int DTAG_GREENSCORE = 361;
+const int DTAG_BROWNSCORE = 362;
+const int INTRO4_1 = 363;
+const int INTRO4_2 = 364;
+const int INTRO4_3 = 365;
+const int INTRO4_4 = 366;
+const int INTRO4_5 = 367;
+const int INTRO4_6 = 368;
+const int SCREECH = 369;
+const int BOSS4_DEADSPEECH = 370;
+const int BOSS4_FIRSTSEE = 371;
+const int PARTY_SPEECH = 372;
+const int POSTAL_SPEECH = 373;
+const int TGSPEECH = 374;
+const int DOGROOMSPEECH = 375;
+const int SMACKED = 376;
+const int MDEVSPEECH = 377;
+const int AREA51SPEECH = 378;
+const int JEEPSOUND = 379;
+const int BIGDOORSLAM = 380;
+const int BOS4_LAY = 381;
+const int WAVESOUND = 382;
+const int ILLBEBACK = 383;
+const int VOL4ENDSND1 = 384;
+const int VOL4ENDSND2 = 385;
+const int EXPANDERHIT = 386;
+const int SNAKESPEECH = 387;
+const int EXPANDERSHOOT = 388;
+const int GETBACKTOWORK = 389;
+const int JIBBED_ACTOR14 = 390;
+const int JIBBED_ACTOR15 = 391;
+const int INTRO4_B = 392;
+const int BIGBANG = 393;
+const int HORNSND = 394;
+const int BELLSND = 395;
+const int GOAWAY = 396;
+const int JOKE = 397;
+const int SWEARFREQUENCY = 100;
+const int CAMERASDESTRUCTABLE = NO;
+const int FREEZERHURTOWNER = YES;
+const int MAXPLAYERHEALTH = 100;
+const int MAXWATERFOUNTAINHEALTH = 50;
+const int YELLHURTSOUNDSTRENGTH = 40;
+const int YELLHURTSOUNDSTRENGTHMP = 50;
+const int MAXXSTRETCH = 70;
+const int MAXYSTRETCH = 70;
+const int MINXSTRETCH = 9;
+const int MINYSTRETCH = 8;
+const int MAXPLAYERATOMICHEALTH = 200;
+const int DOUBLEMAXPLAYERHEALTH = MAXPLAYERATOMICHEALTH;
+const int STARTARMORHEALTH = 0;
+const int RETRIEVEDISTANCE = 844;
+const int SQUISHABLEDISTANCE = 1024;
+const int DEFAULTVISIBILITY = 512;
+const int FROZENQUICKKICKDIST = 980;
+const int GENERICIMPACTDAMAGE = 10;
+const int MAXPISTOLAMMO = 200;
+const int MAXSHOTGUNAMMO = 50;
+const int MAXCHAINGUNAMMO = 200;
+const int MAXRPGAMMO = 50;
+const int MAXHANDBOMBAMMO = 50;
+const int MAXSHRINKERAMMO = 50;
+const int MAXGROWAMMO = 50;
+const int MAXDEVISTATORAMMO = 99;
+const int MAXFREEZEAMMO = 99;
+const int MAXTRIPBOMBAMMO = 10;
+const int TRIPBOMBLASERMODE = 0;
+const int RESPAWNACTORTIME = 768;
+const int RESPAWNITEMTIME = 768;
+const int QSIZE = 64;
+const int BLIMPRESPAWNTIME = 2048;
+const int NUMFREEZEBOUNCES = 3;
+const int RUNNINGSPEED = 53200;
+const int GRAVITATIONALCONSTANT = 176;
+const int PLAYDEADTIME = 120;
+const int SHRUNKCOUNT = 270;
+const int SHRUNKDONECOUNT = 304;
+const int FROZENDRIPTIME = 90;
+const int THAWTIME = 138;
+const int RPGBLASTRADIUS = 1780;
+const int PIPEBOMBRADIUS = 2500;
+const int SHRINKERBLASTRADIUS = 680;
+const int TRIPBOMBBLASTRADIUS = 3880;
+const int MORTERBLASTRADIUS = 2500;
+const int BOUNCEMINEBLASTRADIUS = 2500;
+const int SEENINEBLASTRADIUS = 2048;
+const int KNEE_WEAPON_STRENGTH = 10;
+const int PISTOL_WEAPON_STRENGTH = 6;
+const int HANDBOMB_WEAPON_STRENGTH = 140;
+const int RPG_WEAPON_STRENGTH = 140;
+const int SHRINKER_WEAPON_STRENGTH = 0;
+const int GROWSPARK_WEAPON_STRENGTH = 15;
+const int SHOTGUN_WEAPON_STRENGTH = 10;
+const int CHAINGUN_WEAPON_STRENGTH = 9;
+const int FREEZETHROWER_WEAPON_STRENGTH = 20;
+const int COOL_EXPLOSION_STRENGTH = 38;
+const int TRIPBOMB_STRENGTH = 100;
+const int FIRELASER_WEAPON_STRENGTH = 7;
+const int MORTER_WEAPON_STRENGTH = 50;
+const int BOUNCEMINE_WEAPON_STRENGTH = 150;
+const int SPIT_WEAPON_STRENGTH = 8;
+const int BULLET_WEAPON_STRENGTH = 30;
+const int TROOPSTRENGTH = 30;
+const int PIGCOPSTRENGTH = 100;
+const int PIG_SHIELD_AMOUNT1 = 75;
+const int PIG_SHIELD_AMOUNT2 = 50;
+const int LIZSTRENGTH = 100;
+const int LIZGETTINGDAZEDAT = 15;
+const int LIZEATINGPLAYER = -2;
+const int OCTASTRENGTH = 175;
+const int OCTASCRATCHINGPLAYER = -11;
+const int RECONSTRENGTH = 50;
+const int TURRETSTRENGTH = 30;
+const int ROTTURRETSTRENGTH = 40;
+const int DRONESTRENGTH = 150;
+const int CAPTAINSTRENGTH = 50;
+const int CAPTSPINNINGPLAYER = -11;
+const int COMMANDERSTRENGTH = 350;
+const int SHARKSTRENGTH = 35;
+const int SHARKBITESTRENGTH = -9;
+const int NEWBEASTSTRENGTH = 300;
+const int NEWBEASTSCRATCHAMOUNT = -22;
+const int DOLPHINSTRENGTH = 50;
+const int PISTOLAMMOAMOUNT = 12;
+const int SHOTGUNAMMOAMOUNT = 10;
+const int CHAINGUNAMMOAMOUNT = 50;
+const int RPGAMMOBOX = 5;
+const int CRYSTALAMMOAMOUNT = 5;
+const int GROWCRYSTALAMMOAMOUNT = 20;
+const int DEVISTATORAMMOAMOUNT = 15;
+const int FREEZEAMMOAMOUNT = 25;
+const int HANDBOMBBOX = 5;
+const int BOSS1STRENGTH = 4500;
+const int BOSS1PALSTRENGTH = 1000;
+const int BOSS2STRENGTH = 4500;
+const int BOSS3STRENGTH = 4500;
+const int BOSS4STRENGTH = 6000;
+const int WEAKEST = 1;
+const int WEAK = 5;
+const int MEDIUMSTRENGTH = 10;
+const int TOUGH = 20;
+const int REALLYTOUGH = 30;
+const int ROBOTMOUSESTRENGTH = 45;
+const int GOTTASMART = 90;
+const int PIRATEGALSTRENGTH = 200;
+const int MANWOMANSTRENGTH = 100;
+const int STEROID_AMOUNT = 400;
+const int SHIELD_AMOUNT = 100;
+const int SCUBA_AMOUNT = 6400;
+const int HOLODUKE_AMOUNT = 2400;
+const int JETPACK_AMOUNT = 1600;
+const int HEAT_AMOUNT = 1200;
+const int FIRSTAID_AMOUNT = MAXPLAYERHEALTH;
+const int BOOT_AMOUNT = 200;
+const int SPAWNAMMOODDS = 96;
+const int SPACESHUTTLE = 487;

@@ -5,6 +5,12 @@
 
 GameDLLImports_t* imports;
 
+void A_BLIMP();
+
+void G_InitActors(void) {
+    imports->RegisterActor(A_BLIMP, BLIMP, enemy, 1, NULL, NULL, 0, 0);
+}
+
 void G_InitSounds(void) {
     // Sound Definitions
     definesound(PRED_ROAM, "roam06.voc", 0, 0, 3, 0, 0);
@@ -705,6 +711,8 @@ void G_Init(void) {
 
     G_InitSounds();
     G_InitQuotes();
+
+    G_InitActors();
 }
 
 #define DLLEXPORT __declspec(dllexport)
