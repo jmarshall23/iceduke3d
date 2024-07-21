@@ -82,4 +82,5 @@ endif()
 
 add_subdirectory(Engine)
 add_subdirectory(Game)
+add_subdirectory(GameDLL)
 set_property (DIRECTORY PROPERTY VS_STARTUP_PROJECT Game)
