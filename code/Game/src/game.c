@@ -1799,8 +1799,8 @@ void display_boardfilename_FPS_weapon(short *offx, short *offy, short *stepx, sh
 	// displayweapon() because the display will be much faster
 	for(i=connecthead;i>=0;i=connectpoint2[i])
 	{	
-		if (ud.hideweapon && i==screenpeek)
-			drawsmallweapon(ps[i].curr_weapon, 1, 130, (ud.screen_size<=4)?170:140);
+		//if (ud.hideweapon && i==screenpeek)
+			//drawsmallweapon(ps[i].curr_weapon, 1, 130, (ud.screen_size<=4)?170:140);
 	}
 }
 

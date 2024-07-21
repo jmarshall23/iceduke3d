@@ -2301,13 +2301,55 @@ void checkhitsprite(short i,short sn)
                         if(sprite[sn].picnum != FREEZEBLAST )
                             if( actortype[PN] == 0 )
                     {
-                        j = spawn(sn,JIBS6);
-                        if(sprite[sn].pal == 6)
-                            sprite[j].pal = 6;
-                        sprite[j].z += (4<<8);
-                        sprite[j].xvel = 16;
-                        sprite[j].xrepeat = sprite[j].yrepeat = 24;
-                        sprite[j].ang += 32-(TRAND&63);
+// jmarshall
+                          int bloodParticleCount = 3 + (rand() % 2); // Increased and randomized particle count
+                          j = sprite[sn].owner;
+                          if (j > 0 && ps[sprite[j].yvel].curr_weapon == SHOTGUN_WEAPON) {
+                              bloodParticleCount = 5 + (rand() % 4);
+                          }
+
+                          for (int i = 0; i < bloodParticleCount; i++) {
+                              int j = spawn(sn, JIBS6);
+                              if (sprite[sn].pal == 6) {
+                                  sprite[j].pal = 6;
+                              }
+
+                              // Add variation in the z position
+                              sprite[j].z += (4 << 8) + (rand() % 5 << 8);
+
+                              // Vary the size of the blood particles
+                              sprite[j].xrepeat = sprite[j].yrepeat = 12 + (rand() % 24);
+
+                              // Randomize the angle slightly more
+                              sprite[j].ang += 32 - (TRAND & 63);
+
+                              // Add velocity to blood particles                              
+                              if (j > 0 && ps[sprite[j].yvel].curr_weapon == SHOTGUN_WEAPON) {
+                                  sprite[j].zvel = -(rand() % 2700); // Stronger z velocity for splash effect
+                                  sprite[j].xvel = (TRAND & 255) - 128; // More random x velocity
+                                  sprite[j].yvel = (TRAND & 255) - 128; // More random y velocity
+                              }
+                              else {
+                                  sprite[j].zvel = -(rand() % 1700); // Stronger z velocity for splash effect
+                                  sprite[j].xvel = (TRAND & 255) - 128; // More random x velocity
+                                  sprite[j].yvel = (TRAND & 255) - 128; // More random y velocity
+                              }
+
+                              // Add gravity influence to blood particles
+                              sprite[j].zvel += (rand() % 512) - 256;
+                              int c = rand() % 128;
+                              sprite[j].xvel += c;
+                              sprite[j].yvel += c;
+
+                              // Add rotation to blood particles
+                              sprite[j].ang += rand() % 360;
+
+                              // Optionally, vary the color slightly if not palette 6
+                              if (sprite[j].pal != 6) {
+                                  sprite[j].shade = -16 + (rand() % 32);
+                              }
+                          }
+// jmarshall end
                     }
 
                     j = sprite[sn].owner;

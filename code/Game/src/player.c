@@ -1383,7 +1383,7 @@ void displayweapon(short snum)
     else 
 	{	
 		// FIX_00026: Weapon can now be hidden (on your screen only).
-		if(!ud.hideweapon || cw==KNEE_WEAPON || cw == HANDREMOTE_WEAPON)
+		//if(!ud.hideweapon || cw==KNEE_WEAPON || cw == HANDREMOTE_WEAPON)
 		{
 			switch(cw)
 			{

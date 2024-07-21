@@ -51,7 +51,7 @@ static int32_t g_x;
 static int32_t *g_t;
 static spritetype *g_sp;
 
-#define NUMKEYWORDS     112
+#define NUMKEYWORDS     113
 
 //From global.c
 void FixFilePath(char  *filename);
@@ -173,7 +173,10 @@ char  *keyw[NUMKEYWORDS] =
     "defineskillname",  // 108
     "ifnosounds",       // 109
     "clipdist",         // 110
-    "ifangdiffl"        // 111
+    "ifangdiffl",       // 111
+// jmarshall
+    "spawnn",           // 112
+// jmarshall end
 };
 
 
@@ -1010,7 +1013,10 @@ uint8_t parsecommand(int readfromGRP)
 
             return 0;
 
-
+        case 112:
+            transnum();
+            transnum();
+            return 0;
 
         case 11:
         case 13:
@@ -2633,6 +2639,21 @@ uint8_t  parse(void)
             insptr++;
             if(g_sp->hitag&random_angle)
                 g_sp->ang = TRAND&2047;
+            break;
+        case 112:
+            {
+                insptr++;
+                int n = *insptr;
+                insptr++;
+                if (g_sp->sectnum >= 0 && g_sp->sectnum < MAXSECTORS)
+                {
+                    for (int d = 0; d < n; d++)
+                    {
+                        spawn(g_i, *insptr);
+                    }
+                }
+                insptr++;
+            }
             break;
         case 31:
             insptr++;
