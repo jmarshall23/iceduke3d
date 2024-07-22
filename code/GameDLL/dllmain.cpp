@@ -5,6 +5,8 @@
 
 GameDLLImports_t* imports;
 
+ConAction  *RUBCANDENT = new ConAction(1, 1, 1, 1, 1);
+
 void A_BLIMP();
 
 void G_InitActors(void) {

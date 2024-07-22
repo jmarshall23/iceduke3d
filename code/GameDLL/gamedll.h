@@ -6,6 +6,17 @@
 #include <stdlib.h>
 #include "defs.h"
 
+#ifdef __cplusplus
+class MoveAction;
+#else
+// If you update here update MoveAction in the class too!
+typedef struct {
+public:
+    int horizontal;
+    int vertical;
+} MoveAction;
+#endif
+
 typedef struct GameDLLExports_s {
     int version;
     void (*G_Init)(void);
@@ -210,7 +221,8 @@ typedef struct GameDLLImports_s {
     bool (*ifwasweapon)(int val);
     int (*spawn)(int val);
 
-    void (*Move)(void* val, int val2, int val3, int unknown1);
+    void (*Move)(MoveAction* val, int val2, int val3, int unknown1);
+    void (*Move2)(int val, int val2);
 
     void (*addphealth)(int val);
 
@@ -291,7 +303,7 @@ extern GameDLLImports_t *imports;
 #define ifgapzl(v) if(imports->ifgapzl(v))
 #define ifspawnedby(v) if(imports->ifspawnedby(v))
 #define ifstrength(v) if(imports->ifstrength(v))
-#define ifp(v, nu1, nu2, nu3, nu4) if(imports->ifp(v, nu1, nu2, nu3, nu4))
+#define ifp(v) if(imports->ifp(v, 0, 0, 0, 0))
 #define ifactor(v) if(imports->ifactor(v))
 #define ifcount(v) if(imports->ifcount(v))
 #define ifinwater() if(imports->ifinwater())
@@ -311,6 +323,7 @@ extern GameDLLImports_t *imports;
 #define ifactornotstayput() if(imports->ifactornotstayput())
 #define ifcanseetarget() if(imports->ifcanseetarget())
 #define ifcanshoottarget() if(imports->ifcanshoottarget())
+#define ifgotweaponce(v) if(imports->ifgotweaponce(v))
 
 // Macro definitions for define functions
 #define definesound(id, filename, var1, var2, var3, var4, var5) imports->definesound(id, filename, var1, var2, var3, var4, var5)
@@ -340,7 +353,7 @@ typedef struct {
         this->invvalue = 0;
         this->delay = 0;
     }
-    ConAction(int startframe, int frames, int viewtype, int invvalue, int delay) {
+    ConAction(int startframe, int frames = 0, int viewtype = 0, int invvalue = 0, int delay = 0) {
         this->startframe = startframe;
         this->frames = frames;
         this->viewtype = viewtype;
@@ -372,44 +385,37 @@ __forceinline int ConAction_get_index(const ConAction* action, int i) {
     }
 }
 
-// Definition of MoveAction
-typedef struct {
+#ifdef __cplusplus
+// If you update here update MoveAction in the struct too!
+class MoveAction {
+public:
     int horizontal;
     int vertical;
-} MoveAction;
 
-__forceinline MoveAction* MoveAction_create(int horizontal, int vertical) {
-    MoveAction* action = (MoveAction*)malloc(sizeof(MoveAction));
-    action->horizontal = horizontal;
-    action->vertical = vertical;
-    return action;
-}
+    MoveAction(int horizontal = 0, int vertical = 0)
+        : horizontal(horizontal), vertical(vertical) {}
 
-__forceinline int MoveAction_get_index(const MoveAction* action, int i) {
-    switch (i) {
-    case 0:
-        return action->horizontal;
-    case 1:
-        return action->vertical;
-    default:
-        return -1; // Error value
+    int GetIndex(int i) const {
+        switch (i) {
+        case 0:
+            return horizontal;
+        case 1:
+            return vertical;
+        default:
+            return -1;
+        }
     }
-}
+};
 
-// Definition of AIAction
-typedef struct {
-    ConAction* action;
-    MoveAction* moveAction;
+class AIAction {
+public:
+    ConAction action;
+    MoveAction moveAction;
     int val;
-} AIAction;
 
-__forceinline AIAction* AIAction_create(ConAction* action, MoveAction* moveAction, int val, int unknown) {
-    AIAction* aiAction = (AIAction*)malloc(sizeof(AIAction));
-    aiAction->action = action;
-    aiAction->moveAction = moveAction;
-    aiAction->val = val;
-    return aiAction;
-}
+    AIAction(const ConAction& action, const MoveAction& moveAction, int val = 0, int unknown = 0)
+        : action(action), moveAction(moveAction), val(val) {}
+};
 
 // Definition of ScriptActorRegistration
 typedef void (*Function_t)();
@@ -429,3 +435,13 @@ __forceinline ScriptActorRegistration* ScriptActorRegistration_create(Function_t
     registration->action = action;
     return registration;
 }
+
+extern ConAction* ANULLACTION;
+extern MoveAction* SHUTTLEVELS;
+extern MoveAction* RESPAWN_ACTOR_FLAG;
+extern MoveAction* MOUSEVELS;
+extern ConAction* RUBCANDENT;
+#endif
+
+#include "gibs.h"
+#include "actor_core.h"
